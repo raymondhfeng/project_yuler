@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'polls.apps.PollsConfig',
+    'ignition.apps.IgnitionConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -106,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'US/Pacific'
 
 USE_I18N = True
 
@@ -133,9 +134,13 @@ CELERY_TIMEZONE = 'Asia/Makassar'
 from celery.schedules import crontab
 
 CELERY_BEAT_SCHEDULE = {
+    # 'task-number-one': {
+    #     'task': 'polls.tasks.task_number_one',
+    #     'schedule': crontab(minute="*/1"),
+    #     # 'args': (*args)
+    # }
     'task-number-one': {
-        'task': 'polls.tasks.task_number_one',
+        'task': 'ignition.tasks.task_number_one',
         'schedule': crontab(minute="*/1"),
-        # 'args': (*args)
     }
 }
