@@ -1,0 +1,38 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'ignition/style.css' %}">
+
+<li><a href="/ignition/chart">{{ "num players" }}</a></li>
+<li><a href="/ignition/avg_pot">{{ "average pot" }}</a></li>
+<li><a href="/ignition/pct_flop">{{ "pct flop" }}</a></li>
+
+<h1>About</h1>
+<p>The goal of this project is to provide information to poker players who play on Ignition Online Poker. The Ignition Poker interface has the following information: </p>
+
+<img src="{% static 'ignition/ignition.png' %}" width="50%" / >
+
+<p> A short description of the information provided. (Disclaimer: I am not a professional poker player. There is a lot of theory behind these numbers and my perspective is a practical and simplified one.) </p>
+
+<li>  Stake: Each row represents a stake, essentially, how much money is being wagered on each particular hand. </li>
+<li>  Plyrs: The number of people playing at this stake. Generally, the more the better. However, Ignition Poker purposely obfuscates the number of players after 50, and simply put 50+. This is because they do not want professionals to exploit player pools when they are large. i.e. The more players there are playing, the "softer" the game will be, and the lower the level of competition. </li>
+<li>  Avg Pot: The average side of the pot being taken down. While I don't know for sure, I am fairly certain that this value is referring to the size of the pots at showdown, and not the size of all pots being played. The higher this value is, the more aggressively the game is playing. </li>
+<li>  Plrs/Flop: The number of players that see the "flop". The higher this number is the "looser" players are opening. i.e. If more players are going to the flop, then statistically, the strength of the hands seeing a flop should be less than if less players were seeing a flop. </li>
+
+<p> How it works: </p>
+<ul>
+<li> Terminal script on my mac captures screenshot of the poker GUI information. </li>
+<li>  Image processing to "clean" the screenshot into an image that resembles a spreadsheet. </li>
+<li>  PyTesseract OCR to parse the image into integers and floats. </li>
+<li>  Django Celery Task that inputs the values into a database at a minute resolution. </li>
+<li>  Chart.js to display the most recent 2 hours of data at each stake. </li>
+<li>  ngrok forwards my locally running port to the outside world, securely. </li>
+</ul>
+
+Known Issues:
+<li>  Image Process/OCR is not perfect, need to tweak to get rid of bad parses. </li>
+<li>  Ngrok is not best for production. </li>
+<li>  Need to move from SQLite to Postgres </li>
+<li>  Ignition Poker constantly changes their GUI, breaking the Image Process/OCR </li>
+
+Future Improvements:
+<li>  Build a model that can infer the number of players of a certains stake from the number of players at other stakes. This is because the number of players at all stakes should be correlated. </li>
