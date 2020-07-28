@@ -8,6 +8,9 @@ from chartjs.views.lines import BaseLineChartView
 
 from ignition.models import IgnitionRow
 
+import numpy as np
+
+NUM_TICKS = 60
 
 def index(request):
 	return render(request, 'home.html')
@@ -17,13 +20,17 @@ def index(request):
 class LineChartJSONView(BaseLineChartView):
 
     def __init__(self):
-        self.num_ticks = 120
+        self.num_ticks = NUM_TICKS
         self.keys = ['5','25','50','200','500']
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
         # return ["January", "February", "March", "April", "May", "June", "July"]
-        return [i for i in range(self.num_ticks)]
+        # return [i for i in range(self.num_ticks)]
+        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
+        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
+        return two_hours
 
     def get_providers(self):
         """Return names of datasets."""
@@ -35,19 +42,22 @@ class LineChartJSONView(BaseLineChartView):
         data = list(IgnitionRow.objects.all().order_by('pub_date').values())
         two_hours = data[-self.num_ticks:] # The most recent two hours of data
         keys = ['num_players_{}'.format(key) for key in self.keys]
-        num_players_data = [[min(elem[key],50) for elem in two_hours] for key in keys]
+        num_players_data = [[max(min(elem[key],50),0) for elem in two_hours] for key in keys]
         return num_players_data
 
 class LineChartAvgPot(BaseLineChartView):
 
     def __init__(self):
-        self.num_ticks = 120
-        self.keys = ['5','25','50','200','500']
+        self.num_ticks = NUM_TICKS
+        self.keys = ['5','25','50','200','500','Avg']
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
         # return ["January", "February", "March", "April", "May", "June", "July"]
-        return [i for i in range(self.num_ticks)]
+        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
+        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
+        return two_hours
 
     def get_providers(self):
         """Return names of datasets."""
@@ -59,20 +69,25 @@ class LineChartAvgPot(BaseLineChartView):
         data = list(IgnitionRow.objects.all().order_by('pub_date').values())
         two_hours = data[-self.num_ticks:] # The most recent two hours of data
         avg_pot_data = [[float(elem['avg_pot_{}'.format(key)]) / (int(key) / 100) for elem in two_hours] 
-        	for key in self.keys]
-        avg_pot_data = [[min(elem, 50) for elem in arr] for arr in avg_pot_data] # Assume a max pot size of 2000 BBs
+        	for key in self.keys[:-1]]
+        avg_pot_data = [[max(min(elem, 100),0) for elem in arr] for arr in avg_pot_data] # Assume a max pot size of 2000 BBs
+        average = sum([np.array(lst) for lst in avg_pot_data]) / 5
+        avg_pot_data.append(list(average))
         return avg_pot_data
 
 class LineChartPctFlop(BaseLineChartView):
 
     def __init__(self):
-        self.num_ticks = 120
-        self.keys = ['5','25','50','200','500']
+        self.num_ticks = NUM_TICKS
+        self.keys = ['5','25','50','200','500', 'Avg']
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
         # return ["January", "February", "March", "April", "May", "June", "July"]
-        return [i for i in range(self.num_ticks)]
+        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
+        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
+        return two_hours
 
     def get_providers(self):
         """Return names of datasets."""
@@ -83,10 +98,12 @@ class LineChartPctFlop(BaseLineChartView):
 
         data = list(IgnitionRow.objects.all().order_by('pub_date').values())
         two_hours = data[-self.num_ticks:] # The most recent two hours of data
-        avg_pot_data = [[float(elem['pct_flop_{}'.format(key)]) / (int(key) / 100) for elem in two_hours] 
-        	for key in self.keys]
-        avg_pot_data = [[min(elem, 100) for elem in arr] for arr in avg_pot_data] # Assume a max pot size of 2000 BBs
-        return avg_pot_data
+        pct_flop_data = [[int(elem['pct_flop_{}'.format(key)]) for elem in two_hours] 
+        	for key in self.keys[:-1]]
+        pct_flop_data = [[min(elem, 100) for elem in arr] for arr in pct_flop_data] # Assume a max pot size of 2000 BBs
+        average = sum([np.array(lst) for lst in pct_flop_data]) / 5
+        pct_flop_data.append(list(average))
+        return pct_flop_data
 
 
 line_chart = TemplateView.as_view(template_name='line_chart.html')

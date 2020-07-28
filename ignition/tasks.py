@@ -16,7 +16,7 @@ def task_number_one():
 	num_ppl = [elem if elem != '' else '-1' for elem in num_ppl]
 	num_ppl = [int(elem.replace('+','')) for elem in num_ppl]
 	avg_pot = [elem if elem != '' else '-1' for elem in avg_pot]
-	avg_pot = [float(elem.replace('$','')) for elem in avg_pot]
+	avg_pot = [float(elem.replace('$','').strip('.')) for elem in avg_pot]
 	pct_flop = [elem if elem != '' else '-1' for elem in plrs_flop]
 	pct_flop = [int(elem.replace('%','')) for elem in pct_flop]
 	d = IgnitionRow(num_players_5=num_ppl[0],

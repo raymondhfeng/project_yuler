@@ -1,25 +1,106 @@
 {% load static %}
 <html>
+    <style>
+    div {
+      margin: 30px;
+      /*border: 1px solid #4CAF50;*/
+    } 
+    h2 {
+        text-align: center;
+    }
+    </style>
     <head>
         <title>django-chartjs line chart demo</title>
         <!--[if lte IE 8]>
             <script src="{% static 'js/excanvas.js' %}"></script>
         <![endif]-->
     </head>
+    <div>
     <body>
-        <h1>Some Line Charts loaded in Ajax!</h1>
+        <h2>Number of Players</h2>
 
-        <canvas id="myChart" width="500" height="400"></canvas>
+        <canvas id="myChart" width="900" height="220"></canvas>
 
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
         <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
         <script type="text/javascript">
             $.get('{% url "line_chart_json" %}', function(data) {
                 var ctx = $("#myChart").get(0).getContext("2d");
-                new Chart(ctx, {
+                myChart = new Chart(ctx, {
                     type: 'line', data: data
                 });
             });
         </script>
+        <script type="text/javascript">
+            setInterval(function() {
+                $.get('{% url "line_chart_json" %}', function(data) {
+                    var ctx = $("#myChart").get(0).getContext("2d");
+                    myChart = new Chart(ctx, {
+                        type: 'line', data: data
+                    });
+                });
+            }, 60 * 1000);
+        </script>
     </body>
+    </div>
+
+    <div>
+    <body>
+        <h2>Avg Pot Size</h2>
+
+        <canvas id="myChart2" width="900" height="220"></canvas>
+
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+        <script type="text/javascript">
+            $.get('{% url "line_chart_avg_pot_json" %}', function(data) {
+                var ctx = $("#myChart2").get(0).getContext("2d");
+                myChart2 = new Chart(ctx, {
+                    type: 'line', data: data
+                });
+            });
+        </script>
+        <script>
+            setInterval(function() {
+                $.get('{% url "line_chart_avg_pot_json" %}', function(data) {
+                    var ctx = $("#myChart2").get(0).getContext("2d");
+                    myChart2 = new Chart(ctx, {
+                        type: 'line', data: data
+                    });
+                });
+            }, 60 * 1000);
+        </script>
+    </body>
+    </div>
+
+    <div>
+    <body>
+        <h2>Percent to Flop</h2>
+
+        <canvas id="myChart3" width="900" height="220"></canvas>
+
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+        <script type="text/javascript">
+            $.get('{% url "line_chart_pct_flop_json" %}', function(data) {
+                var ctx = $("#myChart3").get(0).getContext("2d");
+                myChart3 = new Chart(ctx, {
+                    type: 'line', data: data
+                });
+            });
+            // console.log($.get('{% url "line_chart_pct_flop_json" %}'))
+        </script>
+        <script>
+            setInterval(function() {
+                $.get('{% url "line_chart_pct_flop_json" %}', function(data) {
+                    var ctx = $("#myChart3").get(0).getContext("2d");
+                    myChart3 = new Chart(ctx, {
+                        type: 'line', data: data
+                    });
+                });
+            }, 60 * 1000); // 60 * 1000 milsec
+        </script>
+    </body>
+    </div>
+
 </html>
