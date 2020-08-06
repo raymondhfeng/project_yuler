@@ -143,5 +143,9 @@ CELERY_BEAT_SCHEDULE = {
     'task-number-one': {
         'task': 'ignition.tasks.task_number_one',
         'schedule': crontab(minute="*/1"),
+    }, 
+    'task-number-two': {
+        'task': 'ignition.tasks.task_number_two',
+        'schedule': crontab(minute="*/1")
     }
 }

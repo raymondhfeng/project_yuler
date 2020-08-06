@@ -7,7 +7,14 @@ from django.utils import timezone
 import sys
 sys.path.insert(1, '/Users/raymondfeng/Desktop/TrickyWays/cropped')
 
-from get_ignition_stats import get_stats
+from get_ignition_stats_windows import get_stats
+
+import requests
+import json
+import base64
+import os
+
+from datetime import datetime
 
 @task()
 def task_number_one():
@@ -36,3 +43,16 @@ def task_number_one():
 					pct_flop_500=pct_flop[4],
 					pub_date=timezone.now())
 	d.save()
+
+@task()
+def task_number_two():
+	resp = requests.get('http://23a5b8abd730.ngrok.io/ignition_data')
+	img = json.loads(resp.text)['img']
+	img = base64.b64decode(img)
+
+	date_string = str(datetime.now()).replace('-','_').replace(' ', '_').replace(':','_').replace('.', '')
+
+	print('saved file: ', os.path.join('/Users/raymondfeng/Desktop/TrickyWays/screenshots/', date_string + '.jpeg'))
+
+	with open(os.path.join('/Users/raymondfeng/Desktop/TrickyWays/screenshots/', date_string + '.jpeg'), 'wb') as f:
+		f.write(img)

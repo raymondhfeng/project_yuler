@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Generating polynomials and fried chicken – Raymond Feng – CS student</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="
+
+
+
+" />
+    <meta property="og:description" content="
+
+
+
+" />
+    
+    <meta name="author" content="Raymond Feng" />
+
+    
+    <meta property="og:title" content="Generating polynomials and fried chicken" />
+    <meta property="twitter:title" content="Generating polynomials and fried chicken" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Raymond Feng - CS student" href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://raymondhfeng.github.io/images/download.jpeg" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/">Raymond Feng</a></h1>
+            <p class="site-description">CS student</p>
+          </div>
+
+          <nav>
+            <a href="/">Blog</a>
+            <a href="/about">About</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Generating polynomials and fried chicken</h1>
+
+  <div class="entry">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async=""></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<p>It was a Spring Friday evening in 2018, and it was towards the end of the weekly CS70 staff meeting. Everyone was excited, as the professor usually ordered some pizza for us. This time, however, we got Korean fried chicken, so I must imagine that some multi-millionaire decided to randomly donate to the CS departmental budget. As I am munching on the the fattest drumstick that I can recall in recent memory, my friend poses the following question:</p>
+
+<blockquote>
+  <p>If I flip a coin with bias <script type="math/tex">p</script> 100 times, what is the probability that it lands heads an even number of times?</p>
+</blockquote>
+
+<p>My first instinct was <script type="math/tex">\frac{1}{2}</script>, which turns out to be true only if <script type="math/tex">p=\frac{1}{2}</script>. I think about it for a little longer, and start writing out the summation of binomial coefficients that sums all probability of even outcomes. Before I can finish though, another friend (the head TA) comes up behind us, thigh in hand, and says:</p>
+
+<blockquote>
+  <script type="math/tex; mode=display">\frac{1-(1-2p)^n}{2}</script>
+</blockquote>
+
+<p>I asked Von Neumann Jr. how he evaluated the summation so fast, but it turns out you don’t need to. Here’s how he did it:</p>
+
+<p>When flipping a coin with bias <script type="math/tex">p</script> a total of <script type="math/tex">n</script> times, we know that the probability for <script type="math/tex">k</script> heads will follow a binomial distribution.</p>
+<p style="text-align: center;">
+	$$\text{Probability of $$k$$ heads}=\binom{n}{k}p^{k}(1-p)^{n-k}$$
+</p>
+<p>This means that if we have <script type="math/tex">n=100</script>, then we can sum up the “even-headed” outcomes as follows.</p>
+<p style="text-align: center;">
+	$$\text{Probability of even heads} =\sum_{i=0}^{50}\binom{n}{2i}p^{2i}(1-p)^{n-2i}$$
+</p>
+
+<p>This is where I got stuck, and where the trick comes in. To easily compute this summation, you can use the roots of unity filter.</p>
+
+<blockquote>
+  <p>Roots of unity: The solutions to the equation <script type="math/tex">x^2=1</script> are <script type="math/tex">x=e^{\frac{2i\pi}{2}},e^{\frac{2i\pi}{1}}=1,-1</script>. If we set <script type="math/tex">\omega=e^{\frac{2i\pi}{2}}</script>, then <script type="math/tex">\omega, \omega^2</script> are called the roots of unity when <script type="math/tex">n=2</script>.</p>
+</blockquote>
+
+<blockquote>
+  <p>Fact: For any <script type="math/tex">n</script>, the roots of unity sum to zero.</p>
+</blockquote>
+
+<p>If you feel like I am pulling this out of my hat, well then you are right, but stay with me now. Let’s go deeper into the territory of seemingly baseless calculations, and evaluate <script type="math/tex">(1+\omega)^n+(1+\omega^2)^n</script>, which, using a binomial expansion, we see comes out to:</p>
+
+<p style="text-align: center;">
+	$$(1+\omega)^n+(1+\omega^2)^n=[\binom{n}{0}\omega^0+\binom{n}{1}\omega^1+\binom{n}{2}\omega^2...]+[\binom{n}{0}\omega^{0}+\binom{n}{1}\omega^2+\binom{n}{2}\omega^4...]$$
+	$$=[2\binom{n}{0}+\binom{n}{1}(\omega^1+\omega^2)+\binom{n}{2}(\omega^2+\omega^4)...]$$
+</p>
+
+<p>The important part about the resulting sum is that <em>the odd terms will go to zero</em> and <em>the even terms are untouched</em>. This is the roots of unity filter, and we can utilize it to solve our problem.</p>
+
+<blockquote>
+  <p>Fact: If <script type="math/tex">G(x)</script> is a polynomial, then <script type="math/tex">\frac{G(e^{\frac{2i\pi}{2}})+G(e^{\frac{2i\pi}{1}})}{2}</script> will evaluate to the sum of the coefficients with powers that are even.</p>
+</blockquote>
+
+<p>Going back to our original summation, we make an observation:</p>
+
+<p style="text-align: center;">
+	$$G(x)=(px+(1-p))^n=\binom{n}{0}(1-p)^n+\binom{n}{1}p(1-p)^{n-1}x+\binom{n}{2}p^2(1-p)^{n-2}x^2+...$$
+</p>
+
+<p><em>The sum of the coefficients of the even powers is the answer to our problem!</em> So finally.</p>
+
+<p style="text-align: center;">
+	$$\text{Probability of even heads}=\frac{G(1)+G(-1)}{2}$$
+	$$=\frac{1-(1-2p)^n}{2}$$
+</p>
+
+<p>This result can be generalized to any modulo, doesn’t have to be two.</p>
+
+<h4>References</h4>
+<p><a href="https://drive.google.com/file/d/0B_WFOD8f4jS5NEhMQ3NSMXJwUXc/view">Jonathan Xia’s Notes</a></p>
+
+  </div>
+
+  <div class="date">
+    Written on December 28, 2019
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:raymondhfeng@berkeley.edu"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/raymondhfeng"><i class="svg-icon github"></i></a>
+<a href="https://instagram.com/raymondhfeng"><i class="svg-icon instagram"></i></a>
+<a href="https://www.linkedin.com/in/raymondhfeng"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/raymondhfeng"><i class="svg-icon twitter"></i></a>
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+	<!-- Google Analytics -->
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-134540422-1', 'auto');
+		ga('send', 'pageview', {
+		  'page': '/generating-polynomials-and-fried-chicken/',
+		  'title': 'Generating polynomials and fried chicken'
+		});
+	</script>
+	<!-- End Google Analytics -->
+
+
+  </body>
+</html>

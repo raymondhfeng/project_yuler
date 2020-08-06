@@ -34,10 +34,8 @@
         <script type="text/javascript">
             setInterval(function() {
                 $.get('{% url "line_chart_json" %}', function(data) {
-                    var ctx = $("#myChart").get(0).getContext("2d");
-                    myChart = new Chart(ctx, {
-                        type: 'line', data: data
-                    });
+                    myChart.data = data
+                    myChart.update()
                 });
             }, 60 * 1000);
         </script>
@@ -63,10 +61,8 @@
         <script>
             setInterval(function() {
                 $.get('{% url "line_chart_avg_pot_json" %}', function(data) {
-                    var ctx = $("#myChart2").get(0).getContext("2d");
-                    myChart2 = new Chart(ctx, {
-                        type: 'line', data: data
-                    });
+                    myChart2.data = data
+                    myChart2.update()
                 });
             }, 60 * 1000);
         </script>
@@ -93,10 +89,8 @@
         <script>
             setInterval(function() {
                 $.get('{% url "line_chart_pct_flop_json" %}', function(data) {
-                    var ctx = $("#myChart3").get(0).getContext("2d");
-                    myChart3 = new Chart(ctx, {
-                        type: 'line', data: data
-                    });
+                    myChart3.data = data
+                    myChart3.update()
                 });
             }, 60 * 1000); // 60 * 1000 milsec
         </script>

@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 card mb-4  mt-3 left  top">
+      <div class="card-body">
+        <h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
+        <p class=" text-muted">{{ post.author }} | {{ post.created_on }}</p>
+        <p class="card-text ">{{ object.content | safe }}</p>
+        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis justo vitae nisl consectetur faucibus. Ut lacinia lectus diam, eu vehicula urna feugiat in. Etiam vel finibus felis. Vivamus rutrum lacus gravida metus facilisis, sit amet scelerisque lacus tincidunt. Ut tincidunt, ante eu interdum sagittis, velit felis convallis erat, egestas placerat lorem felis quis nunc. Nunc auctor suscipit lobortis. Etiam mattis quam augue, eget pretium orci rhoncus id. Nullam lectus quam, vehicula quis enim vitae, dignissim blandit odio. Vestibulum a sagittis eros. Duis at velit in metus posuere lobortis et non ex. Nulla posuere iaculis mi, eget ultricies metus luctus malesuada. Nunc euismod quam non tincidunt vehicula.
+
+        Cras cursus dui eget felis fringilla consequat. Vestibulum pharetra, ipsum nec laoreet sodales, arcu augue tristique mi, ac efficitur enim ligula eu elit. Integer vel mauris laoreet magna egestas pretium sit amet nec libero. Aliquam est ipsum, efficitur eu laoreet quis, placerat non odio. Aenean non tortor orci. Quisque vulputate quam ut justo interdum, auctor vehicula sem sollicitudin. Etiam sit amet ante ut urna ornare iaculis vel ac tortor. Ut ac nisl ullamcorper, imperdiet nunc sed, ultricies elit. Nunc porttitor elementum ligula, eu placerat nunc lobortis ut. Sed consequat ligula et risus euismod consequat. Duis enim mi, hendrerit at convallis vitae, tincidunt quis risus. Aliquam erat volutpat. Sed vel lorem quam. Mauris lacinia imperdiet magna vitae rhoncus. Aliquam mattis pretium ex, a bibendum libero iaculis id.
+
+        Phasellus aliquet vitae nisl vitae sodales. Donec fringilla pharetra leo sit amet commodo. In eget tortor ut enim fringilla bibendum. Ut eu consectetur velit. Aliquam quis tortor bibendum, lobortis magna eget, pellentesque nibh. Etiam pharetra quis justo ut sagittis. Ut congue odio id justo vehicula, at pharetra lectus ornare. Vestibulum hendrerit metus nec arcu molestie, vitae maximus justo mollis. Pellentesque vitae imperdiet lacus. Nullam ac elit dui.
+
+        Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Cras hendrerit elit et erat ultricies, in euismod diam pretium. Etiam laoreet eros at facilisis porta. Vestibulum accumsan tellus et tellus iaculis, in fringilla lorem dapibus. Fusce ultricies urna sed elit cursus, mattis facilisis ante aliquet. Nullam vel lacinia sem, at rhoncus leo. Curabitur ac tellus nec sem posuere semper. Duis quis odio risus. Aenean vitae felis ac dolor feugiat facilisis euismod aliquam tortor. Proin fermentum sem et eros tincidunt, eget hendrerit metus elementum. Phasellus fermentum magna non vulputate rutrum.
+
+        Donec accumsan nec nibh eu feugiat. Phasellus vel tortor a dolor tempus iaculis ac facilisis dui. Donec placerat est nec ipsum elementum, ac vehicula lorem varius. Nunc at ante sem. Donec efficitur tellus ac sem fringilla facilisis. Sed condimentum, elit blandit congue dictum, ante lectus cursus nisi, posuere ornare nibh augue id dui. Cras at congue odio. Nunc tempor pharetra posuere. Vestibulum et semper justo. </p>
+      </div>
+    </div>
+    {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
+  </div>
+</div>
+
+{% endblock content %}

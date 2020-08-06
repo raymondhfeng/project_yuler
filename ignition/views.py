@@ -112,3 +112,41 @@ pct_flop_line_chart = TemplateView.as_view(template_name='line_chart_pct_flop.ht
 line_chart_json = LineChartJSONView.as_view()
 line_chart_avg_pot_json = LineChartAvgPot.as_view()
 line_chart_pct_flop_json = LineChartPctFlop.as_view()
+
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+
+from .forms import NameForm	
+
+def get_name(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NameForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            # return HttpResponseRedirect('/thanks/')
+            print("gygomd")
+            return HttpResponseRedirect('goob')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        print("we are getting")
+        form = NameForm()
+        form = MyModelForm()
+
+    return render(request, 'name.html', {'form': form})
+
+from django.views import generic
+from .models import Post
+
+class PostList(generic.ListView):
+    queryset = Post.objects.filter(status=1).order_by('-created_on')
+    template_name = 'index.html'
+
+class PostDetail(generic.DetailView):
+    model = Post
+    template_name = 'post_detail.html'
