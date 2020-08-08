@@ -21,12 +21,25 @@ from datetime import datetime
 def task_number_one():
 
 	num_ppl, avg_pot, plrs_flop = get_stats()
-	num_ppl = [elem if elem != '' else '-1' for elem in num_ppl]
-	num_ppl = [int(elem.replace('+','')) for elem in num_ppl]
-	avg_pot = [elem if elem != '' else '-1' for elem in avg_pot]
-	avg_pot = [float(elem.replace('$','').strip('.')) for elem in avg_pot]
-	pct_flop = [elem if elem != '' else '-1' for elem in plrs_flop]
-	pct_flop = [int(elem.replace('%','')) for elem in pct_flop]
+	for i in range(len(num_ppl)):
+		num_ppl[i] = num_ppl[i].replace('+','')
+		try:
+			num_ppl[i] = int(num_ppl[i])
+		except ValueError:
+			num_ppl[i] = -1
+	for i in range(len(avg_pot)):
+		avg_pot[i] = avg_pot[i].replace('$','').strip('.')
+		try:
+			avg_pot[i] = float(avg_pot[i])
+		except ValueError:
+			avg_pot[i] = -1
+	for i in range(len(pct_flop)):
+		pct_flop[i] = pct_flop[i].replace('%','')
+		try:
+			pct_flop[i] = int(pct_flop[i])
+		except ValueError:
+			pct_flop[i] = -1
+			
 	d = IgnitionRow(num_players_5=num_ppl[0],
 					num_players_25=num_ppl[1],
 					num_players_50=num_ppl[2],
