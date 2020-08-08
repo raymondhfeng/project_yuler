@@ -12,6 +12,10 @@ img {
   border: 1px solid green ;
 }
 
+xmp {
+  font-size: 85%;
+}
+
 </style>
 
 <div class="container">
@@ -42,16 +46,52 @@ img {
         </ul>
 
         <xmp>
-           ...code...
-           fdsfdsfds
+        git clone 
+          https://github.com/raymondhfeng-wttec/django-tutorial
+        sudo apt-get update
+        sudo apt-get install curl
+        curl -0 insert anaconda link
+        run the bash install script
         </xmp>
+
+        <p>good tutorial for install anaconda on ubuntu. i prefer conda over venv. either works. i used miniconda because I am on a raspberry pi. I did development on mac but am deploying on a raspberry pi.</p>
+
+        start with sqlite for now but will upgrade later
+        install django
+        python3 -n pip install Django
+        needed to upgrade python on raspberry pi: https://gist.github.com/dschep/24aa61672a2092246eaca2824400d37f
+        sudo python3.6 -m pip install Django
+        python3.6 manage.py runserver
+        install redis from tutorial
+        make redis
+        redis-server
+        sudo python3.6 -m pip install celery==4.0.2
+
+        https://pypi.org/project/django-chartjs/
+        sudo python3.6 -m pip install django-chartjs
+        sudo python3.6 -m pip install redis
+        sudo python3.6 -m pip install celery==4.1.1
+        https://www.raspberrypi.org/blog/piwheels/
+        sudo python3.6 -m pip install numpy
+        python3.6 manage.py makemigrations
+        python3.6 manage.py migrate
+        python3.6 -m pip install pillow
+        python3.6 -m pip install opencv-python
+        gotta make a requirements.txt 
+        sudo python3.6 -m pip install pandas \
+        https://stackoverflow.com/questions/50951955/pytesseract-tesseractnotfound-error-tesseract-is-not-installed-or-its-not-i \
+        https://www.pyimagesearch.com/2017/07/03/installing-tesseract-for-ocr/
+
+        https://www.pyimagesearch.com/2015/10/26/how-to-install-opencv-3-on-raspbian-jessie/
+        extremely useful for installing cv2 and using virtualenv
+        this was such a pain in the ass that i can see why docker is so successful now  
         
         <h2>REST API</h2>
 
         <p>The REST API can be cloned from my github. There is not much special configuration needed, and the API simply traverses a directory for the most recent screenshot, and returns it in a JSON payload after encoding in base64. Configuring some directories and doing runserver will suffice. Then use nginx to expose the local server to the outside world. Autoscreen needs to be installed so that screenshots are taken periodically.</p>
 
         <h2>Main Django Server</h2>
-        <p>After cloning from github, need to install Django Celery Beat (INSERT TUTORIAL SITE). The tasks are already created and you just need to start them with the celery command. Redis also needs to be installed (INSERT TUTORIAL SITE) and that server needs to be run. Also need to make the migrations locally. </p>
+        <p>After cloning from github, need to install Django Celery Beat (https://medium.com/@yedjoe/celery-4-periodic-task-in-django-9f6b5a8c21c7). The tasks are already created and you just need to start them with the celery command. Redis also needs to be installed (https://redis.io/topics/quickstart) and that server needs to be run. Also need to make the migrations locally. </p>
         <xmp>
           python manage.py makemigrations
           python manage.py migrate 
