@@ -47,14 +47,14 @@ def task_number_one():
 
 @task()
 def task_number_two():
-	resp = requests.get('http://23a5b8abd730.ngrok.io/ignition_data')
-	img = json.loads(resp.text)['img']
-	img = base64.b64decode(img)
+    resp = requests.get('http://23a5b8abd730.ngrok.io/ignition_data') # TODO: Make this configurable
+    img = json.loads(resp.text)['img']
+    img = base64.b64decode(img)
 
-	date_string = str(datetime.now()).replace('-','_').replace(' ', '_').replace(':','_').replace('.', '')
+    date_string = str(datetime.now()).replace('-','_').replace(' ', '_').replace(':','_').replace('.', '')
 
-        image_path = os.path.join('/
-	print('saved file: ', os.path.join('/Users/raymondfeng/Desktop/TrickyWays/screenshots/', date_string + '.jpeg'))
+    image_path = os.path.join('/home/pi/screenshots/', date_string + '.jpeg') # TODO: Make this configurable 
+    print('saved file: ', image_path)
 
-	with open(os.path.join('/Users/raymondfeng/Desktop/TrickyWays/screenshots/', date_string + '.jpeg'), 'wb') as f:
-		f.write(img)
+    with open(image_path, 'wb') as f:
+        f.write(img)
