@@ -33,12 +33,12 @@ def task_number_one():
 			avg_pot[i] = float(avg_pot[i])
 		except ValueError:
 			avg_pot[i] = -1
-	for i in range(len(pct_flop)):
-		pct_flop[i] = pct_flop[i].replace('%','')
+	for i in range(len(plrs_flop)):
+		plrs_flop[i] = plrs_flop[i].replace('%','')
 		try:
-			pct_flop[i] = int(pct_flop[i])
+			plrs_flop[i] = int(plrs_flop[i])
 		except ValueError:
-			pct_flop[i] = -1
+			plrs_flop[i] = -1
 			
 	d = IgnitionRow(num_players_5=num_ppl[0],
 					num_players_25=num_ppl[1],
