@@ -39,7 +39,7 @@ def task_number_one():
 			plrs_flop[i] = int(plrs_flop[i])
 		except ValueError:
 			plrs_flop[i] = -1
-			
+        pct_flop = plrs_flop	
 	d = IgnitionRow(num_players_5=num_ppl[0],
 					num_players_25=num_ppl[1],
 					num_players_50=num_ppl[2],
