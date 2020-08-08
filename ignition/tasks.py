@@ -5,7 +5,8 @@ from ignition.models import IgnitionRow
 from django.utils import timezone
 
 import sys
-sys.path.insert(1, '/Users/raymondfeng/Desktop/TrickyWays/cropped')
+# sys.path.insert(1, '/Users/raymondfeng/Desktop/TrickyWays/cropped') # TODO: Make this configurable
+sys.path.insert(1,'/home/pi/project_genovese')
 
 from get_ignition_stats_windows import get_stats
 
@@ -52,6 +53,7 @@ def task_number_two():
 
 	date_string = str(datetime.now()).replace('-','_').replace(' ', '_').replace(':','_').replace('.', '')
 
+        image_path = os.path.join('/
 	print('saved file: ', os.path.join('/Users/raymondfeng/Desktop/TrickyWays/screenshots/', date_string + '.jpeg'))
 
 	with open(os.path.join('/Users/raymondfeng/Desktop/TrickyWays/screenshots/', date_string + '.jpeg'), 'wb') as f:
