@@ -6,8 +6,8 @@ from django.utils import timezone
 
 import sys
 # sys.path.insert(1, '/Users/raymondfeng/Desktop/TrickyWays/cropped') # TODO: Make this configurable
-sys.path.insert(1,'/home/pi/project_genovese')
-sys.path.insert(1,'/home/pi/django-tutorial/ignition')
+# sys.path.insert(1,'/home/pi/project_genovese')
+sys.path.insert(1,'/home/pi/project_yuler/ignition')
 
 from get_ignition_stats_windows import get_stats
 
