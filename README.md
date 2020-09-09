@@ -14,7 +14,7 @@ http://45471f846089.ngrok.io/ignition/
 ## Known Issues/Future Work
 - Image Process/OCR is not perfect, need to tweak to get rid of bad parses.
 - Ngrok is not best for production.
-- Need to move from SQLite to Postgres
+- Need to move from SQLite to Postgres. EDIT: 9/9/2020, done, that was easier than I expected. 
 - Ignition Poker constantly changes their GUI, breaking the Image Process/OCR
 - Build a model that can infer the number of players of a certains stake from the number of players at other stakes. This is because the number of players at all stakes should be correlated.
 ## Naming
