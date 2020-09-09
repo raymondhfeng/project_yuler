@@ -7,6 +7,7 @@ from django.utils import timezone
 import sys
 # sys.path.insert(1, '/Users/raymondfeng/Desktop/TrickyWays/cropped') # TODO: Make this configurable
 sys.path.insert(1,'/home/pi/project_genovese')
+sys.path.insert(1,'/home/pi/django-tutorial/ignition')
 
 from get_ignition_stats_windows import get_stats
 
@@ -60,7 +61,7 @@ def task_number_one():
 
 @task()
 def task_number_two():
-    resp = requests.get('http://23a5b8abd730.ngrok.io/ignition_data') # TODO: Make this configurable
+    resp = requests.get('http://2835dba625aa.ngrok.io/ignition_data') # TODO: Make this configurable
     img = json.loads(resp.text)['img']
     img = base64.b64decode(img)
 

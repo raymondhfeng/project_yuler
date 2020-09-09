@@ -42,7 +42,7 @@ xmp {
           <li>OCR. After getting the screenshot, use PIL, CV2, Pytesseract to do OCR and inserts into backend database.</li>
           <li>Chartjs. Render the data into charts. </li>
           <li>Autoscreen. Automatically capture screenshots at preset time interval. </li>
-          <li>Nginx to expose both the API and the main site to the outside world. </li>
+          <li>Ngrok to expose both the API and the main site to the outside world. </li>
         </ul>
 
         <xmp>
@@ -67,7 +67,8 @@ xmp {
         redis-server
         sudo python3.6 -m pip install celery==4.0.2
 
-        https://pypi.org/project/django-chartjs/
+	<xmp>
+	https://pypi.org/project/django-chartjs/
         sudo python3.6 -m pip install django-chartjs
         sudo python3.6 -m pip install redis
         sudo python3.6 -m pip install celery==4.1.1
@@ -81,11 +82,13 @@ xmp {
         sudo python3.6 -m pip install pandas \
         https://stackoverflow.com/questions/50951955/pytesseract-tesseractnotfound-error-tesseract-is-not-installed-or-its-not-i \
         https://www.pyimagesearch.com/2017/07/03/installing-tesseract-for-ocr/
+	</xmp>
 
         https://www.pyimagesearch.com/2015/10/26/how-to-install-opencv-3-on-raspbian-jessie/
         extremely useful for installing cv2 and using virtualenv
         this was such a pain in the ass that i can see why docker is so successful now  
         
+
         <h2>REST API</h2>
 
         <p>The REST API can be cloned from my github. There is not much special configuration needed, and the API simply traverses a directory for the most recent screenshot, and returns it in a JSON payload after encoding in base64. Configuring some directories and doing runserver will suffice. Then use nginx to expose the local server to the outside world. Autoscreen needs to be installed so that screenshots are taken periodically.</p>
@@ -101,7 +104,13 @@ xmp {
         </xmp>
         <p> Need to import the OCR code module, a bunch of requirements are necessary, as the celery task is dependent on that. Also need to install Chartjs (INSERT TUTORIAL SITE).</p>
 
-
+	<h2>Future Work</h2>
+	<ul>
+	<li>Change from SQLite to Postgres</li>
+	<li>Make the OCR more robust.</li>
+	<li>Make the frontend sleeker with adminator skin</li>
+	<li>Create a model that will predict the number of people in rooms when 50+<li>
+	</ul>
       </div>
     </div>
     {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
