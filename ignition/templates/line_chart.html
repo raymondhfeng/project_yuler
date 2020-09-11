@@ -2,11 +2,11 @@
 <html>
     <style>
     div {
-      margin: 30px;
+      margin: 20px;
       /*border: 1px solid #4CAF50;*/
     } 
     h2 {
-        text-align: center;
+        text-align: left;
     }
     </style>
     <head>
@@ -27,7 +27,9 @@
             $.get('{% url "line_chart_json" %}', function(data) {
                 var ctx = $("#myChart").get(0).getContext("2d");
                 myChart = new Chart(ctx, {
-                    type: 'line', data: data
+			type: 'line', data: data, options: {
+				responsive: false
+			}
                 });
             });
         </script>
@@ -54,7 +56,10 @@
             $.get('{% url "line_chart_avg_pot_json" %}', function(data) {
                 var ctx = $("#myChart2").get(0).getContext("2d");
                 myChart2 = new Chart(ctx, {
-                    type: 'line', data: data
+                    type: 'line', data: data, options:
+			{
+				responsive: false
+			}
                 });
             });
         </script>
@@ -81,7 +86,9 @@
             $.get('{% url "line_chart_pct_flop_json" %}', function(data) {
                 var ctx = $("#myChart3").get(0).getContext("2d");
                 myChart3 = new Chart(ctx, {
-                    type: 'line', data: data
+			type: 'line', data: data, options: {
+				responsive: false
+			}
                 });
             });
             // console.log($.get('{% url "line_chart_pct_flop_json" %}'))

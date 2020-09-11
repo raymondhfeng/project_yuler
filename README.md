@@ -24,5 +24,6 @@ My hand tracking software proves this, and this is probably because the number o
 - Ignition Poker constantly changes their GUI, breaking the Image Process/OCR
 - Build a model that can infer the number of players of a certains stake from the number of players at other stakes. This is because the number of players at all stakes should be correlated.
 - Build a Docker image and use Kubernetes to start thinking about scalability. A single Raspberry Pi can only do so much. 
+- Need to learn how to deploy production server, the generic Django server is too brittle. Keeps getting killed ever ~2 days. 
 ## Naming
 A pun that combines the famous Project Euler, and Udny Yule, the Yule in the Yule-Walker equations from time series analysis. 
