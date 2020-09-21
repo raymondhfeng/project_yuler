@@ -17,10 +17,9 @@
     </head>
     <div>
     <body>
+
         <h2>Number of Players</h2>
-
-        <canvas id="myChart" width="900" height="220"></canvas>
-
+	<canvas id="myChart" width="900" height="220"></canvas>
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
         <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
         <script type="text/javascript">
@@ -41,6 +40,10 @@
                 });
             }, 60 * 1000);
         </script>
+	<script type="text/javascript">
+		setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
+		}, 60 * 1000);
+	</script>
     </body>
     </div>
 
@@ -103,5 +106,52 @@
         </script>
     </body>
     </div>
+	<style>
+	.row {
+		  display: flex;
+		    flex-wrap: wrap;
+		      padding: 0 4px;
+	}
 
+	/* Create two equal columns that sits next tch other */
+	.column {
+		  flex: 50%;
+		    padding: 0 4px;
+	}
+
+	.column img {
+		  margin-top: 8px;
+		    vertical-align: middle;
+	}
+	</style>
+	<div class="row">
+		<div class="column">
+		<img id="container" src="{% static 'ignition/fishy_ocr/num_ppl_0.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/num_ppl_1.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/num_ppl_2.png' %}" width="5%"/>
+		<img id="continer" src="{% static 'ignition/fishy_ocr/num_ppl_3.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/num_ppl_4.png' %}" width="5%"/></div>
+		</div>
+		<div class="column">	
+		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_0.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_1.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_2.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_3.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_4.png' %}" width="5%"/>
+		</div>
+		<div class="column">	
+		<img id="container" src="{% static 'ignition/fishy_ocr/plrs_flop_0.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/plrs_flop_1.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/plrs_flop_2.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/plrs_flop_3.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/plrs_flop_4.png' %}" width="5%"/>
+		</div>
+		<div class="column">	
+		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_fishy_0.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_fishy_1.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_fishy_2.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_fishy_3.png' %}" width="5%"/>
+		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_fishy_4.png' %}" width="5%"/>
+		</div>
+	</div>
 </html>

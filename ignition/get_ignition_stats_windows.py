@@ -78,6 +78,7 @@ def get_stats():
                 draw = ImageDraw.Draw(img)    
                 draw.text((0, 0),str(result),(0),font=font)
                 img.save(path_name)
+                img.save("/home/pi/project_yuler/ignition/static/ignition/fishy_ocr/num_ppl_{}.png".format(i))
                 num_ppl.append(result)
 
         avg_pot = []
@@ -105,7 +106,8 @@ def get_stats():
                 result = pytesseract.image_to_string(img, config='--psm 10 --oem 3 -c tessedit_char_whitelist=.0123456789$')
                 draw = ImageDraw.Draw(img)    
                 draw.text((0, 0),str(result),(0),font=font)
-                img.save(path_name)     
+                img.save(path_name)    
+                img.save("/home/pi/project_yuler/ignition/static/ignition/fishy_ocr/avg_pot_{}.png".format(i))
                 if '.' not in result: result = result[:-2] + '.' + result[-2:] # TODO: This is clunky
                 avg_pot.append(result)
         
@@ -137,6 +139,7 @@ def get_stats():
                 draw = ImageDraw.Draw(img)
                 draw.text((0, 0),str(result),(0),font=font)
                 img.save(path_name)
+                img.save("/home/pi/project_yuler/ignition/static/ignition/fishy_ocr/plrs_flop_{}.png".format(i))
                 plrs_flop.append(result)
 
         print(num_ppl, avg_pot, plrs_flop)

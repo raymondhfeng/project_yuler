@@ -1,7 +1,7 @@
 # Project Yuler
 An Django web app that remembers online poker data. Uses said data to helper players make better decisions on when to play. 
 ## Live site
-http://23cdf674e978.ngrok.io/ignition/
+http://54ab765a3bf6.ngrok.io/ignition/
 ## System Diagram
 ![alt text](readme_static/project_yuler_system_diagram_v1.PNG)
 ## How It Works

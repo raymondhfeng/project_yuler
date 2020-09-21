@@ -20,7 +20,7 @@ from datetime import datetime
 
 @task()
 def task_number_one():
-
+        blinds = [0.05,0.25,0.5,2.0,5.0]
         num_ppl, avg_pot, plrs_flop = get_stats()
         for i in range(len(num_ppl)):
                 num_ppl[i] = num_ppl[i].replace('+','')
@@ -34,6 +34,8 @@ def task_number_one():
                         avg_pot[i] = float(avg_pot[i])
                 except ValueError:
                         avg_pot[i] = -1
+                if avg_pot[i] / blinds[i] > 40 or avg_pot == -1: # uncommon for avg pot to be more than 5 bbs.  
+                    img.save("/home/pi/project_yuler/ignition/static/ignition/fishy_ocr/avg_pot_fishy_{}.png".format(i))
         for i in range(len(plrs_flop)):
                 plrs_flop[i] = plrs_flop[i].replace('%','')
                 plrs_flop[i] = plrs_flop[i][:2] # TODO: This is clunky
