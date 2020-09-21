@@ -80,7 +80,7 @@ def get_stats():
                 img.save(path_name)
                 img.save("/home/pi/project_yuler/ignition/static/ignition/fishy_ocr/num_ppl_{}.png".format(i))
                 num_ppl.append(result)
-
+        blinds = [0.05,0.25,0.5,2.0,5.0]
         avg_pot = []
         avg_pot_width = 64
         left = 487
@@ -109,6 +109,8 @@ def get_stats():
                 img.save(path_name)    
                 img.save("/home/pi/project_yuler/ignition/static/ignition/fishy_ocr/avg_pot_{}.png".format(i))
                 if '.' not in result: result = result[:-2] + '.' + result[-2:] # TODO: This is clunky
+                if float(result.replace('$','').strip('.')) / blinds[i] > 40: # Unusual
+                    img.save("/home/pi/project_yuler/ignition/static/ignition/fishy_ocr/avg_pot_fishy_{}.png".format(i))
                 avg_pot.append(result)
         
 

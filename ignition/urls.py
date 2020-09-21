@@ -19,4 +19,5 @@ urlpatterns = [
     path('blog', views.PostList.as_view(), name='home'),
     # path('<slug:slug>/', views.PostDetail.as_view(), name='post_detail'),
     path('poker_data/', TemplateView.as_view(template_name = 'poker_data_grabber.html'), name='poker_data_grabber'),
+    path('poker_data/', TemplateView.as_view(template_name = 'poker_data_grabber.html'), name='poker_data_grabber'),
 ]
