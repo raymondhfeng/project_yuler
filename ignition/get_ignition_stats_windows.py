@@ -83,7 +83,7 @@ def get_stats():
         blinds = [0.05,0.25,0.5,2.0,5.0]
         avg_pot = []
         avg_pot_width = 64
-        left = 487
+        left = 487 + 5
         num_rows = 5
         y_delta = im.size[1] / num_rows
         for i in range(num_rows):
@@ -99,6 +99,7 @@ def get_stats():
                 img = img.resize((round(img.size[0]*10), round(img.size[1]*10)), Image.ANTIALIAS)
                 img.save(path_name)
                 img = cv2.imread(path_name, 0)
+                img = cv2.erode(img, np.ones((5,5), np.uint8), iterations=2)
                 thresh, img = cv2.threshold(img,0,255,cv2.THRESH_BINARY + cv2.THRESH_OTSU)
                 img = 255 - img
                 cv2.imwrite(path_name, img)
