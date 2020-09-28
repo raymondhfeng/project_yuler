@@ -1,4 +1,4 @@
-from django.shortcuts import render
+ from django.shortcuts import render
 
 # Create your views here.
 
@@ -9,6 +9,13 @@ from chartjs.views.lines import BaseLineChartView
 from ignition.models import IgnitionRow
 
 import numpy as np
+import pandas as pd 
+import matplotlib.pyplot as plt
+import statsmodels.formula.api as sm
+import time
+from datetime import datetime, timedelta
+from time import mktime
+from statsmodels.regression.linear_model import OLSResults
 
 NUM_TICKS = 60
 
@@ -36,11 +43,33 @@ class LineChartJSONView(BaseLineChartView):
         """Return names of datasets."""
         return self.keys
 
+    def get_preds(self):
+        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
+        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        data = pd.DataFrame(two_hours)
+        data['pub_date_struct'] = data.apply(lambda x: time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z"),axis=1)
+        data.index = data.apply(lambda x: datetime.fromtimestamp(mktime(x['pub_date_struct'])),axis=1)
+        data['hour'] = data.apply(lambda x: str(time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z")[3]), axis=1)
+        data['day_of_week'] = data.index.map(lambda x: x.weekday())
+        data['hour'] = pd.Categorical(
+            data['hour'], categories=list(range(24)))
+        data['day_of_week'] = pd.Categorical(
+            data['day_of_week'], categories=list(range(7)))
+        hour_dummies = pd.get_dummies(data['hour'], drop_first=True)
+        hour_dummies.columns = ['h'+ str(elem) for elem in hour_dummies.columns]
+        day_of_week_dummies = pd.get_dummies(data['day_of_week'], drop_first=True)
+        day_of_week_dummies.columns = ['dow'+str(elem) for elem in day_of_week_dummies.columns]
+        data = pd.concat((data,hour_dummies,day_of_week_dummies), axis=1)
+        results = OLSResults.load("ols_9_21_data.pickle")
+        preds = results.predict(data)
+        return preds
+
     def get_data(self):
         """Return 3 datasets to plot."""
 
         data = list(IgnitionRow.objects.all().order_by('pub_date').values())
         two_hours = data[-self.num_ticks:] # The most recent two hours of data
+
         keys = ['num_players_{}'.format(key) for key in self.keys]
         num_players_data = [[max(min(elem[key],50),0) for elem in two_hours] for key in keys]
         return num_players_data
