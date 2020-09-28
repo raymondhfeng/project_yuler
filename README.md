@@ -2,7 +2,7 @@
 An Django web app that remembers online poker data. Uses said data to helper players make better decisions on when to play. 
 ## Live site
 (home) http://058a7295c294.ngrok.io/ignition/  
-(main app) http://058a7295c294.ngrok.io/ignition/ignition/chart (give a few seconds to load)
+(main app) http://058a7295c294.ngrok.io/ignition/chart (give a few seconds to load)
 ## System Diagram
 ![alt text](readme_static/project_yuler_system_diagram_v1.PNG)
 ## How It Works
