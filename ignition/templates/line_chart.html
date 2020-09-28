@@ -16,17 +16,17 @@
     <div>
         <body>
 
-            <h2>Number of Players</h2>
-    	<canvas id="myChart" width="900" height="220"></canvas>
+        <h2>Number of Players</h2>
+        <canvas id="myChart" width="900" height="220"></canvas>
             <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
             <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
             <script type="text/javascript">
                 $.get('{% url "line_chart_json" %}', function(data) {
                     var ctx = $("#myChart").get(0).getContext("2d");
                     myChart = new Chart(ctx, {
-    			type: 'line', data: data, options: {
-    				responsive: false
-    			}
+                type: 'line', data: data, options: {
+                    responsive: false
+                }
                     });
                 });
             </script>
@@ -38,10 +38,42 @@
                     });
                 }, 60 * 1000);
             </script>
-    	<script type="text/javascript">
-    		setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
-    		}, 60 * 1000);
-    	</script>
+        <script type="text/javascript">
+            setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
+            }, 60 * 1000);
+        </script>
+        </body>
+    </div>
+
+    <div>
+        <body>
+
+        <h2>Number of Players (OLS estimate) </h2>
+        <canvas id="myChart" width="900" height="220"></canvas>
+            <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+            <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+            <script type="text/javascript">
+                $.get('{% url "line_chart_num_plrs_pred_json" %}', function(data) {
+                    var ctx = $("#myChart").get(0).getContext("2d");
+                    myChart = new Chart(ctx, {
+                        type: 'line', data: data, options: {
+                            responsive: false
+                        }
+                    });
+                });
+            </script>
+            <script type="text/javascript">
+                setInterval(function() {
+                    $.get('{% url "line_chart_json" %}', function(data) {
+                        myChart.data = data
+                        myChart.update()
+                    });
+                }, 60 * 1000);
+            </script>
+        <script type="text/javascript">
+            setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
+            }, 60 * 1000);
+        </script>
         </body>
     </div>
 

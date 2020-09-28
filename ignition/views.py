@@ -43,7 +43,36 @@ class LineChartJSONView(BaseLineChartView):
         """Return names of datasets."""
         return self.keys
 
-    def get_preds(self):
+    def get_data(self):
+        """Return 3 datasets to plot."""
+
+        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
+        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+
+        keys = ['num_players_{}'.format(key) for key in self.keys]
+        num_players_data = [[max(min(elem[key],50),0) for elem in two_hours] for key in keys]
+        return num_players_data
+
+class LineChartNumPlrsPred(BaseLineChartView):
+
+    def __init__(self):
+        self.num_ticks = NUM_TICKS
+        self.keys = ['5','25','50','200','500','Avg']
+
+    def get_labels(self):
+        """Return 7 labels for the x-axis."""
+        # return ["January", "February", "March", "April", "May", "June", "July"]
+        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
+        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
+        return two_hours
+
+    def get_providers(self):
+        """Return names of datasets."""
+        return self.keys
+
+    def get_data(self):
+        """Return 3 datasets to plot."""
         data = list(IgnitionRow.objects.all().order_by('pub_date').values())
         two_hours = data[-self.num_ticks:] # The most recent two hours of data
         data = pd.DataFrame(two_hours)
@@ -64,16 +93,6 @@ class LineChartJSONView(BaseLineChartView):
         results = OLSResults.load("ols_9_21_data.pickle")
         preds = results.predict(data)
         return preds
-
-    def get_data(self):
-        """Return 3 datasets to plot."""
-
-        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
-        two_hours = data[-self.num_ticks:] # The most recent two hours of data
-
-        keys = ['num_players_{}'.format(key) for key in self.keys]
-        num_players_data = [[max(min(elem[key],50),0) for elem in two_hours] for key in keys]
-        return num_players_data
 
 class LineChartAvgPot(BaseLineChartView):
 
@@ -142,6 +161,7 @@ pct_flop_line_chart = TemplateView.as_view(template_name='line_chart_pct_flop.ht
 line_chart_json = LineChartJSONView.as_view()
 line_chart_avg_pot_json = LineChartAvgPot.as_view()
 line_chart_pct_flop_json = LineChartPctFlop.as_view()
+line_chart_num_plrs_pred_json = LineChartNumPlrsPred.as_view()
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
