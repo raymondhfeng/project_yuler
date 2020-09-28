@@ -57,7 +57,7 @@ class LineChartNumPlrsPred(BaseLineChartView):
 
     def __init__(self):
         self.num_ticks = NUM_TICKS
-        self.keys = ['5','25','50','200','500','Avg']
+        self.keys = ['200']
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
@@ -65,6 +65,7 @@ class LineChartNumPlrsPred(BaseLineChartView):
         data = list(IgnitionRow.objects.all().order_by('pub_date').values())
         two_hours = data[-self.num_ticks:] # The most recent two hours of data
         two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
+        return list(range(60))
         return two_hours
 
     def get_providers(self):
@@ -92,7 +93,8 @@ class LineChartNumPlrsPred(BaseLineChartView):
         data = pd.concat((data,hour_dummies,day_of_week_dummies), axis=1)
         results = OLSResults.load("ols_9_21_data.pickle")
         preds = results.predict(data)
-        return preds
+        print(preds.values)
+        return [[int(elem) for elem in preds.values]]
 
 class LineChartAvgPot(BaseLineChartView):
 
