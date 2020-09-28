@@ -1,4 +1,4 @@
- from django.shortcuts import render
+from django.shortcuts import render
 
 # Create your views here.
 
@@ -47,6 +47,7 @@ class LineChartJSONView(BaseLineChartView):
         data = list(IgnitionRow.objects.all().order_by('pub_date').values())
         two_hours = data[-self.num_ticks:] # The most recent two hours of data
         data = pd.DataFrame(two_hours)
+        data['pub_date'] = data.apply(lambda x: str(x['pub_date']),axis=1)
         data['pub_date_struct'] = data.apply(lambda x: time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z"),axis=1)
         data.index = data.apply(lambda x: datetime.fromtimestamp(mktime(x['pub_date_struct'])),axis=1)
         data['hour'] = data.apply(lambda x: str(time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z")[3]), axis=1)
