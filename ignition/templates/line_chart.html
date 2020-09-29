@@ -49,13 +49,13 @@
         <body>
 
         <h2>Number of Players (OLS estimate) </h2>
-        <canvas id="myChart" width="900" height="220"></canvas>
+        <canvas id="myChart4" width="900" height="220"></canvas>
             <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
             <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
             <script type="text/javascript">
                 $.get('{% url "line_chart_num_plrs_pred_json" %}', function(data) {
-                    var ctx = $("#myChart").get(0).getContext("2d");
-                    myChart = new Chart(ctx, {
+                    var ctx = $("#myChart4").get(0).getContext("2d");
+                    myChart4 = new Chart(ctx, {
                         type: 'line', data: data, options: {
                             responsive: false
                         }
@@ -64,9 +64,9 @@
             </script>
             <script type="text/javascript">
                 setInterval(function() {
-                    $.get('{% url "line_chart_json" %}', function(data) {
-                        myChart.data = data
-                        myChart.update()
+                    $.get('{% url "line_chart_num_plrs_pred_json" %}', function(data) {
+                        myChart4.data = data
+                        myChart4.update()
                     });
                 }, 60 * 1000);
             </script>
