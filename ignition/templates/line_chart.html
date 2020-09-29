@@ -79,6 +79,38 @@
 
     <div>
         <body>
+
+        <h2>Number of Players (CVXPY estimate) </h2>
+        <canvas id="myChart5" width="900" height="220"></canvas>
+            <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+            <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+            <script type="text/javascript">
+                $.get('{% url "line_chart_num_plrs_pred_cvx_json" %}', function(data) {
+                    var ctx = $("#myChart5").get(0).getContext("2d");
+                    myChart5 = new Chart(ctx, {
+                        type: 'line', data: data, options: {
+                            responsive: false
+                        }
+                    });
+                });
+            </script>
+            <script type="text/javascript">
+                setInterval(function() {
+                    $.get('{% url "line_chart_num_plrs_pred_json" %}', function(data) {
+                        myChart5.data = data
+                        myChart5.update()
+                    });
+                }, 60 * 1000);
+            </script>
+        <script type="text/javascript">
+            setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
+            }, 60 * 1000);
+        </script>
+        </body>
+    </div>
+
+    <div>
+        <body>
             <h2>Avg Pot Size</h2>
 
             <canvas id="myChart2" width="900" height="220"></canvas>

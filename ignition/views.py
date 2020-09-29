@@ -65,7 +65,6 @@ class LineChartNumPlrsPred(BaseLineChartView):
         data = list(IgnitionRow.objects.all().order_by('pub_date').values())
         two_hours = data[-self.num_ticks:] # The most recent two hours of data
         two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
-        return list(range(60))
         return two_hours
 
     def get_providers(self):
@@ -95,6 +94,52 @@ class LineChartNumPlrsPred(BaseLineChartView):
         preds = results.predict(data)
         print(preds.values)
         return [[int(elem) for elem in preds.values]]
+
+class LineChartNumPlrsPredCVX(BaseLineChartView):
+
+    def __init__(self):
+        self.num_ticks = NUM_TICKS
+        self.keys = ['200']
+
+    def get_labels(self):
+        """Return 7 labels for the x-axis."""
+        # return ["January", "February", "March", "April", "May", "June", "July"]
+        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
+        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
+        return two_hours
+
+    def get_providers(self):
+        """Return names of datasets."""
+        return self.keys
+
+    def get_data(self):
+        """Return 3 datasets to plot."""
+        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
+        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        data = pd.DataFrame(two_hours)
+        data['pub_date'] = data.apply(lambda x: str(x['pub_date']),axis=1)
+        data['pub_date_struct'] = data.apply(lambda x: time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z"),axis=1)
+        data.index = data.apply(lambda x: datetime.fromtimestamp(mktime(x['pub_date_struct'])),axis=1)
+        data['hour'] = data.apply(lambda x: str(time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z")[3]), axis=1)
+        data['day_of_week'] = data.index.map(lambda x: x.weekday())
+        data['hour'] = pd.Categorical(
+            data['hour'], categories=list(range(24)))
+        data['day_of_week'] = pd.Categorical(
+            data['day_of_week'], categories=list(range(7)))
+        hour_dummies = pd.get_dummies(data['hour'], drop_first=True)
+        hour_dummies.columns = ['h'+ str(elem) for elem in hour_dummies.columns]
+        day_of_week_dummies = pd.get_dummies(data['day_of_week'], drop_first=True)
+        day_of_week_dummies.columns = ['dow'+str(elem) for elem in day_of_week_dummies.columns]
+        cols_keep = ['num_players_5','num_players_25','num_players_50','num_players_200','num_players_500']
+        data = data[cols_keep]
+        data = pd.concat((data,hour_dummies,day_of_week_dummies), axis=1)
+        data = data.drop(labels='num_players_25',axis=1)
+        data = np.array(data.values)
+        c_cvx = np.loadtxt('cvxpy_constraint_num_plrs_25.txt', dtype=float)
+        preds = data @ c_cvx
+        return [list(preds)]
+
 
 class LineChartAvgPot(BaseLineChartView):
 
@@ -164,6 +209,7 @@ line_chart_json = LineChartJSONView.as_view()
 line_chart_avg_pot_json = LineChartAvgPot.as_view()
 line_chart_pct_flop_json = LineChartPctFlop.as_view()
 line_chart_num_plrs_pred_json = LineChartNumPlrsPred.as_view()
+line_chart_num_plrs_pred_cvx_json = LineChartNumPlrsPredCVX.as_view()
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render

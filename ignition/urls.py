@@ -15,6 +15,7 @@ urlpatterns = [
     path('avg_potJSON', line_chart_avg_pot_json, name='line_chart_avg_pot_json'),
     path('pct_flopJSON', line_chart_pct_flop_json, name='line_chart_pct_flop_json'),
     path('num_plrs_predJSON', line_chart_num_plrs_pred_json, name='line_chart_num_plrs_pred_json'),
+    path('num_plrs_pred_cvxJSON', line_chart_num_plrs_pred_cvx_json, name='line_chart_num_plrs_pred_cvx_json'),
     path('your_name', get_name, name='your_name'),
     # path('poker_data_grabber', TemplateView.as_view(template_name = 'blog.html'), name='poker_data_grabber'),    
     path('blog', views.PostList.as_view(), name='home'),
