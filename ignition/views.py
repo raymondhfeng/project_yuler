@@ -57,7 +57,7 @@ class LineChartNumPlrsPred(BaseLineChartView):
 
     def __init__(self):
         self.num_ticks = NUM_TICKS
-        self.keys = ['200']
+        self.keys = ['5','25','50','200','500']
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
@@ -91,10 +91,18 @@ class LineChartNumPlrsPred(BaseLineChartView):
         day_of_week_dummies = pd.get_dummies(data['day_of_week'], drop_first=True)
         day_of_week_dummies.columns = ['dow'+str(elem) for elem in day_of_week_dummies.columns]
         data = pd.concat((data,hour_dummies,day_of_week_dummies), axis=1)
-        results = OLSResults.load("ols_9_21_data.pickle")
-        preds = results.predict(data)
-        print(preds.values)
-        return [[int(elem) for elem in preds.values]]
+        results5 = OLSResults.load("ols_9_21_data_5.pickle")
+        results25 = OLSResults.load("ols_9_21_data_25.pickle")
+        results50 = OLSResults.load("ols_9_21_data_50.pickle")
+        results200 = OLSResults.load("ols_9_21_data_200.pickle")
+        results500 = OLSResults.load("ols_9_21_data_500.pickle")
+        preds5 = results5.predict(data)
+        preds25 = results25.predict(data)
+        preds50 = results50.predict(data)
+        preds200 = results200.predict(data)
+        preds500 = results500.predict(data)
+        preds = [preds5,preds25,preds50,preds200,preds500]
+        return [[int(elem) for elem in pred.values] for pred in preds]
 
 class LineChartAvgPot(BaseLineChartView):
 
