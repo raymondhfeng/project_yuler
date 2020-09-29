@@ -2,6 +2,7 @@ from django.urls import path
 
 from . import views
 from .views import line_chart, line_chart_json, avg_pot_line_chart, line_chart_avg_pot_json, pct_flop_line_chart, line_chart_pct_flop_json, line_chart_num_plrs_pred_json
+from .views import line_chart_num_plrs_pred_cvx_json
 from .views import get_name
 from django.views.generic import TemplateView
 

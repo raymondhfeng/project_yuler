@@ -96,7 +96,7 @@
             </script>
             <script type="text/javascript">
                 setInterval(function() {
-                    $.get('{% url "line_chart_num_plrs_pred_json" %}', function(data) {
+                    $.get('{% url "line_chart_num_plrs_pred_cvx_json" %}', function(data) {
                         myChart5.data = data
                         myChart5.update()
                     });
