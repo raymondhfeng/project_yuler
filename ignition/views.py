@@ -107,7 +107,7 @@ class LineChartNumPlrsPredCVX(BaseLineChartView):
 
     def __init__(self):
         self.num_ticks = NUM_TICKS
-        self.keys = ['200']
+        self.keys = ['5','25','50','200','500']
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
@@ -142,11 +142,21 @@ class LineChartNumPlrsPredCVX(BaseLineChartView):
         cols_keep = ['num_players_5','num_players_25','num_players_50','num_players_200','num_players_500']
         data = data[cols_keep]
         data = pd.concat((data,hour_dummies,day_of_week_dummies), axis=1)
-        data = data.drop(labels='num_players_25',axis=1)
-        data = np.array(data.values)
-        c_cvx = np.loadtxt('cvxpy_constraint_num_plrs_25.txt', dtype=float)
-        preds = data @ c_cvx
-        return [list(preds)]
+
+        all_models =  ['cvxpy_constraint_num_plrs_5.txt','cvxpy_constraint_num_plrs_25.txt',
+        'cvxpy_constraint_num_plrs_50.txt','cvxpy_constraint_num_plrs_200.txt','cvxpy_constraint_num_plrs_500.txt']
+        all_preds = []
+
+        for i in range(len(all_models)):
+            this_data = data.drop(labels=cols_keep[i],axis=1)
+            this_data = np.array(this_data.values)
+            c_cvx = np.loadtxt(all_models[i], dtype=float)
+            preds = this_data @ c_cvx
+            preds = list(preds)
+            all_preds.append(preds)
+
+
+        return all_preds
 
 
 class LineChartAvgPot(BaseLineChartView):
