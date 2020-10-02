@@ -13,6 +13,8 @@ An Django web app that remembers online poker data. Uses said data to helper pla
 - Chart.js to display the most recent 2 hours of data at each stake.
 - ngrok forwards my locally running port to the outside world.
 ## Data Analysis
-In progress. 
+- Linear Regression: Regressing Number of players at NL25 on number of players at other stakes, time of day, and day of week. 
+- CVXPY Regression: Regressing on the same variables, but using convex solvers to include an inequality constraint, which ensures that predictions for 50+ players will be greater than fifty. 
+- Tobit Regression: In progress.  
 ## Naming
 A pun that combines the famous Project Euler, and Udny Yule, the Yule in the Yule-Walker equations from time series analysis. 
