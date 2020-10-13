@@ -1,22 +1,28 @@
 from django.db import models
 
 class IgnitionRow(models.Model):
-	num_players_5 = models.IntegerField(default=-1)
-	num_players_25 = models.IntegerField(default=-1)
-	num_players_50 = models.IntegerField(default=-1)
-	num_players_200 = models.IntegerField(default=-1)
-	num_players_500 = models.IntegerField(default=-1)
-	avg_pot_5 = models.DecimalField(default=-1, max_digits=6, decimal_places=2)
-	avg_pot_25 = models.DecimalField(default=-1, max_digits=6, decimal_places=2)
-	avg_pot_50 = models.DecimalField(default=-1, max_digits=6, decimal_places=2)
-	avg_pot_200 = models.DecimalField(default=-1, max_digits=6, decimal_places=2)
-	avg_pot_500 = models.DecimalField(default=-1, max_digits=6, decimal_places=2)
-	pct_flop_5 = models.IntegerField(default=-1)
-	pct_flop_25 = models.IntegerField(default=-1)
-	pct_flop_50 = models.IntegerField(default=-1)
-	pct_flop_200 = models.IntegerField(default=-1)
-	pct_flop_500 = models.IntegerField(default=-1)
-	pub_date = models.DateTimeField('published date')
+        num_players_5 = models.IntegerField(default=-1)
+        num_players_25 = models.IntegerField(default=-1)
+        num_players_50 = models.IntegerField(default=-1)
+        num_players_200 = models.IntegerField(default=-1)
+        num_players_500 = models.IntegerField(default=-1)
+        avg_pot_5 = models.DecimalField(default=-1, max_digits=6, decimal_places=2)
+        avg_pot_25 = models.DecimalField(default=-1, max_digits=6, decimal_places=2)
+        avg_pot_50 = models.DecimalField(default=-1, max_digits=6, decimal_places=2)
+        avg_pot_200 = models.DecimalField(default=-1, max_digits=6, decimal_places=2)
+        avg_pot_500 = models.DecimalField(default=-1, max_digits=6, decimal_places=2)
+        pct_flop_5 = models.IntegerField(default=-1)
+        pct_flop_25 = models.IntegerField(default=-1)
+        pct_flop_50 = models.IntegerField(default=-1)
+        pct_flop_200 = models.IntegerField(default=-1)
+        pct_flop_500 = models.IntegerField(default=-1)
+        pub_date = models.DateTimeField('published date')
+
+class IgnitionRowPredictionOLS(IgnitionRow):
+    pass
+
+class IgnitionRowPredictionCVX(IgnitionRow):
+    pass
 
 COLOR_CHOICES = (
     ('green','GREEN'),
