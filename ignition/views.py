@@ -159,7 +159,7 @@ class LineChart(TemplateView):
         context['recentSum'] = sum([recentRow["num_players_{}".format(key)] for key in keys]) 
         context['olsSum'] = sum([olsRow["num_players_{}".format(key)] for key in keys]) 
         context['cvxSum'] = sum([cvxRow["num_players_{}".format(key)] for key in keys]) 
-
+        
         return context
 
 line_chart = TemplateView.as_view(template_name='line_chart.html')
