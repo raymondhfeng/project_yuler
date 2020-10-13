@@ -143,11 +143,6 @@ CELERY_TIMEZONE = 'Asia/Makassar'
 from celery.schedules import crontab
 
 CELERY_BEAT_SCHEDULE = {
-    # 'task-number-one': {
-    #     'task': 'polls.tasks.task_number_one',
-    #     'schedule': crontab(minute="*/1"),
-    #     # 'args': (*args)
-    # }
     'task-number-one': {
         'task': 'ignition.tasks.task_number_one',
         'schedule': crontab(minute="*/1"),
@@ -159,5 +154,9 @@ CELERY_BEAT_SCHEDULE = {
     'clean_screenshots': {
         'task': 'ignition.tasks.clean_screenshots',
         'schedule': crontab(hour=0)
+    },
+    'stitch_photos': {
+        'task': 'ignition.tasks.stitch_photos',
+        'schedule': crontab(minute="*/1")
     }
 }

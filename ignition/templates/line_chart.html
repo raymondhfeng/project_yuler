@@ -29,6 +29,13 @@
 	      border: 1px solid black;
 	        border-collapse: collapse;
     }
+    .center {
+	      display: block;
+	        margin-left: auto;
+		  margin-right: auto;
+		    width: 90%;
+		    vertical-align: middle;
+    }
     </style>
     <head>
 	    <link rel="icon" type="image/png" href="{% static 'ignition/spades-512.png' %}">
@@ -218,6 +225,10 @@
                 </body>
             </div>        
         </div>
+    <div>
+	    <h3>Recent OCR Failures</h3>
+	<img src="{% static 'ignition/fishy_ocr/stitched_fishy_ocrs.png' %}" width="80%" class="center"/>
+    </div>
     </div>
 
     <div class="flex-container">
@@ -301,36 +312,4 @@
     	}
 	</style>
 
-<!-- 
-	<div class="row">
-		<div class="column">
-		<img id="container" src="{% static 'ignition/fishy_ocr/num_ppl_0.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/num_ppl_1.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/num_ppl_2.png' %}" width="5%"/>
-		<img id="continer" src="{% static 'ignition/fishy_ocr/num_ppl_3.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/num_ppl_4.png' %}" width="5%"/></div>
-		</div>
-		<div class="column">	
-		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_0.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_1.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_2.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_3.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_4.png' %}" width="5%"/>
-		</div>
-		<div class="column">	
-		<img id="container" src="{% static 'ignition/fishy_ocr/plrs_flop_0.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/plrs_flop_1.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/plrs_flop_2.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/plrs_flop_3.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/plrs_flop_4.png' %}" width="5%"/>
-		</div>
-		<div class="column">	
-		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_fishy_0.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_fishy_1.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_fishy_2.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_fishy_3.png' %}" width="5%"/>
-		<img id="container" src="{% static 'ignition/fishy_ocr/avg_pot_fishy_4.png' %}" width="5%"/>
-		</div>
-	</div>
--->
 </html>
