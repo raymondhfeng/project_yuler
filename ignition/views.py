@@ -97,7 +97,7 @@ class LineChartAvgPot(BaseLineChartView):
 
     def __init__(self):
         self.num_ticks = NUM_TICKS
-        self.keys = ['5','25','50','200','500','Avg']
+        self.keys = ['5','25','50','200','500']
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
@@ -118,8 +118,6 @@ class LineChartAvgPot(BaseLineChartView):
         avg_pot_data = [[float(elem['avg_pot_{}'.format(key)]) / (int(key) / 100) for elem in two_hours] 
         	for key in self.keys[:-1]]
         avg_pot_data = [[max(min(elem, 100),0) for elem in arr] for arr in avg_pot_data] # Assume a max pot size of 2000 BBs
-        average = sum([np.array(lst) for lst in avg_pot_data]) / 5
-        avg_pot_data.append(list(average))
         return avg_pot_data
 
 class LineChartPctFlop(BaseLineChartView):
