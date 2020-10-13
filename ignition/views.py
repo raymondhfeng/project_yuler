@@ -1,7 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
-
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from chartjs.views.lines import BaseLineChartView
@@ -21,8 +19,6 @@ NUM_TICKS = 60
 
 def index(request):
 	return render(request, 'home.html')
-    # return HttpResponse("Hello, world. You're at the ignition index.")
-
 
 class LineChartJSONView(BaseLineChartView):
 
@@ -32,10 +28,8 @@ class LineChartJSONView(BaseLineChartView):
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        # return ["January", "February", "March", "April", "May", "June", "July"]
-        # return [i for i in range(self.num_ticks)]
-        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
-        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = reversed(data)
         two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
         return two_hours
 
@@ -45,12 +39,9 @@ class LineChartJSONView(BaseLineChartView):
 
     def get_data(self):
         """Return 3 datasets to plot."""
-
-        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
-        two_hours = data[-self.num_ticks:] # The most recent two hours of data
-
-        keys = ['num_players_{}'.format(key) for key in self.keys]
-        num_players_data = [[max(min(elem[key],50),0) for elem in two_hours] for key in keys]
+        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = data[::-1]
+        num_players_data = [[max(min(elem['num_players_{}'.format(key)],50),0) for elem in two_hours] for key in self.keys]
         return num_players_data
 
 class LineChartNumPlrsPred(BaseLineChartView):
@@ -61,9 +52,8 @@ class LineChartNumPlrsPred(BaseLineChartView):
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        # return ["January", "February", "March", "April", "May", "June", "July"]
-        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
-        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = reversed(data)
         two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
         return two_hours
 
@@ -73,8 +63,8 @@ class LineChartNumPlrsPred(BaseLineChartView):
 
     def get_data(self):
         """Return 3 datasets to plot."""
-        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
-        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = data[::-1]
         data = pd.DataFrame(two_hours)
         data['pub_date'] = data.apply(lambda x: str(x['pub_date']),axis=1)
         data['pub_date_struct'] = data.apply(lambda x: time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z"),axis=1)
@@ -111,9 +101,8 @@ class LineChartNumPlrsPredCVX(BaseLineChartView):
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        # return ["January", "February", "March", "April", "May", "June", "July"]
-        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
-        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = reversed(data)
         two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
         return two_hours
 
@@ -123,8 +112,8 @@ class LineChartNumPlrsPredCVX(BaseLineChartView):
 
     def get_data(self):
         """Return 3 datasets to plot."""
-        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
-        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = reversed(data)
         data = pd.DataFrame(two_hours)
         data['pub_date'] = data.apply(lambda x: str(x['pub_date']),axis=1)
         data['pub_date_struct'] = data.apply(lambda x: time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z"),axis=1)
@@ -167,9 +156,8 @@ class LineChartAvgPot(BaseLineChartView):
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        # return ["January", "February", "March", "April", "May", "June", "July"]
-        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
-        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = reversed(data)
         two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
         return two_hours
 
@@ -198,8 +186,8 @@ class LineChartPctFlop(BaseLineChartView):
     def get_labels(self):
         """Return 7 labels for the x-axis."""
         # return ["January", "February", "March", "April", "May", "June", "July"]
-        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
-        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = reversed(data)
         two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
         return two_hours
 
@@ -209,9 +197,8 @@ class LineChartPctFlop(BaseLineChartView):
 
     def get_data(self):
         """Return 3 datasets to plot."""
-
-        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
-        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = data[::-1]
         pct_flop_data = [[int(elem['pct_flop_{}'.format(key)]) for elem in two_hours] 
         	for key in self.keys[:-1]]
         pct_flop_data = [[min(elem, 100) for elem in arr] for arr in pct_flop_data] # Assume a max pot size of 2000 BBs
@@ -245,12 +232,10 @@ def get_name(request):
             # ...
             # redirect to a new URL:
             # return HttpResponseRedirect('/thanks/')
-            print("gygomd")
             return HttpResponseRedirect('goob')
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        print("we are getting")
         form = NameForm()
         form = MyModelForm()
 

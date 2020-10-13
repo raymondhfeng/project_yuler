@@ -15,6 +15,7 @@ import requests
 import json
 import base64
 import os
+import glob
 
 from datetime import datetime
 
@@ -74,3 +75,9 @@ def task_number_two():
 
     with open(image_path, 'wb') as f:
         f.write(img)
+
+@task()
+def clean_screenshots():  
+    files = glob.glob('/home/pi/screenshots/*')
+    for f in files:
+        os.remove(f)

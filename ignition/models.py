@@ -1,8 +1,4 @@
 from django.db import models
-# from django.utils import timezone
-# import datetime
-
-# Create your models here.
 
 class IgnitionRow(models.Model):
 	num_players_5 = models.IntegerField(default=-1)
