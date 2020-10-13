@@ -88,41 +88,10 @@ class LineChartNumPlrsPredCVX(BaseLineChartView):
 
     def get_data(self):
         """Return 3 datasets to plot."""
-        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
-        two_hours = reversed(data)
-        data = pd.DataFrame(two_hours)
-        data['pub_date'] = data.apply(lambda x: str(x['pub_date']),axis=1)
-        data['pub_date_struct'] = data.apply(lambda x: time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z"),axis=1)
-        data.index = data.apply(lambda x: datetime.fromtimestamp(mktime(x['pub_date_struct'])),axis=1)
-        data['hour'] = data.apply(lambda x: str(time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z")[3]), axis=1)
-        data['day_of_week'] = data.index.map(lambda x: x.weekday())
-        data['hour'] = pd.Categorical(
-            data['hour'], categories=list(range(24)))
-        data['day_of_week'] = pd.Categorical(
-            data['day_of_week'], categories=list(range(7)))
-        hour_dummies = pd.get_dummies(data['hour'], drop_first=True)
-        hour_dummies.columns = ['h'+ str(elem) for elem in hour_dummies.columns]
-        day_of_week_dummies = pd.get_dummies(data['day_of_week'], drop_first=True)
-        day_of_week_dummies.columns = ['dow'+str(elem) for elem in day_of_week_dummies.columns]
-        cols_keep = ['num_players_5','num_players_25','num_players_50','num_players_200','num_players_500']
-        data = data[cols_keep]
-        data = pd.concat((data,hour_dummies,day_of_week_dummies), axis=1)
-
-        all_models =  ['cvxpy_constraint_num_plrs_5.txt','cvxpy_constraint_num_plrs_25.txt',
-        'cvxpy_constraint_num_plrs_50.txt','cvxpy_constraint_num_plrs_200.txt','cvxpy_constraint_num_plrs_500.txt']
-        all_preds = []
-
-        for i in range(len(all_models)):
-            this_data = data.drop(labels=cols_keep[i],axis=1)
-            this_data = np.array(this_data.values)
-            c_cvx = np.loadtxt(all_models[i], dtype=float)
-            preds = this_data @ c_cvx
-            preds = list(preds)
-            all_preds.append(preds)
-
-
-        return all_preds
-
+        data = list(IgnitionRowPredictionCVX.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = data[::-1]
+        num_players_data = [[elem['num_players_{}'.format(key)] for elem in two_hours] for key in self.keys]
+        return num_players_data
 
 class LineChartAvgPot(BaseLineChartView):
 
@@ -161,7 +130,6 @@ class LineChartPctFlop(BaseLineChartView):
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
-        # return ["January", "February", "March", "April", "May", "June", "July"]
         data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
         two_hours = reversed(data)
         two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]

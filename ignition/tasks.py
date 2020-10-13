@@ -85,11 +85,11 @@ def task_number_one():
             day_of_week_dummies = pd.get_dummies(data['day_of_week'], drop_first=True)
             day_of_week_dummies.columns = ['dow'+str(elem) for elem in day_of_week_dummies.columns]
             data = pd.concat((data,hour_dummies,day_of_week_dummies), axis=1)
-            results5 = OLSResults.load("ols_9_21_data_5.pickle")
-            results25 = OLSResults.load("ols_9_21_data_25.pickle")
-            results50 = OLSResults.load("ols_9_21_data_50.pickle")
-            results200 = OLSResults.load("ols_9_21_data_200.pickle")
-            results500 = OLSResults.load("ols_9_21_data_500.pickle")
+            results5 = OLSResults.load("regression_models/ols_9_21_data_5.pickle")
+            results25 = OLSResults.load("regression_models/ols_9_21_data_25.pickle")
+            results50 = OLSResults.load("regression_models/ols_9_21_data_50.pickle")
+            results200 = OLSResults.load("regression_models/ols_9_21_data_200.pickle")
+            results500 = OLSResults.load("regression_models/ols_9_21_data_500.pickle")
             preds5 = results5.predict(data)
             preds25 = results25.predict(data)
             preds50 = results50.predict(data)
@@ -129,7 +129,7 @@ def task_number_one():
             for i in range(len(all_models)):
                 this_data = data.drop(labels=cols_keep[i],axis=1)
                 this_data = np.array(this_data.values)
-                c_cvx = np.loadtxt(all_models[i], dtype=float)
+                c_cvx = np.loadtxt("regression_models/" + all_models[i], dtype=float)
                 preds = this_data @ c_cvx
                 preds = list(preds)
                 all_preds.append(preds)
