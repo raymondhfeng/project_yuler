@@ -112,11 +112,10 @@ class LineChartAvgPot(BaseLineChartView):
 
     def get_data(self):
         """Return 3 datasets to plot."""
-
-        data = list(IgnitionRow.objects.all().order_by('pub_date').values())
-        two_hours = data[-self.num_ticks:] # The most recent two hours of data
+        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = data[::-1] # The most recent two hours of data
         avg_pot_data = [[float(elem['avg_pot_{}'.format(key)]) / (int(key) / 100) for elem in two_hours] 
-        	for key in self.keys[:-1]]
+        	for key in self.keys]
         avg_pot_data = [[max(min(elem, 100),0) for elem in arr] for arr in avg_pot_data] # Assume a max pot size of 2000 BBs
         return avg_pot_data
 
@@ -124,7 +123,7 @@ class LineChartPctFlop(BaseLineChartView):
 
     def __init__(self):
         self.num_ticks = NUM_TICKS
-        self.keys = ['5','25','50','200','500', 'Avg']
+        self.keys = ['5','25','50','200','500']
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""
@@ -142,10 +141,8 @@ class LineChartPctFlop(BaseLineChartView):
         data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
         two_hours = data[::-1]
         pct_flop_data = [[int(elem['pct_flop_{}'.format(key)]) for elem in two_hours] 
-        	for key in self.keys[:-1]]
+        	for key in self.keys]
         pct_flop_data = [[min(elem, 100) for elem in arr] for arr in pct_flop_data] # Assume a max pot size of 2000 BBs
-        average = sum([np.array(lst) for lst in pct_flop_data]) / 5
-        pct_flop_data.append(list(average))
         return pct_flop_data
 
 
