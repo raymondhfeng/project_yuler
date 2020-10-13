@@ -41,7 +41,8 @@
         				    responsive: false,
 						title: {
 							display: true,
-							text: 'Number of Players'
+							text: 'Number of Players',
+                            fontSize: 14
 						}
         				}
         				    });
@@ -66,7 +67,7 @@
             <div>
                 <body>
 
-                <canvas id="myChart4" width="600" height="220"></canvas>
+                <canvas id="myChart4" width="400" height="220"></canvas>
                     <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
                     <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
                     <script type="text/javascript">
@@ -99,15 +100,10 @@
                 </body>
             </div>
         </div>
-	</div>
-
-    <div class="flex-container">
         <div>
             <div>
                 <body>
-
-                <h2>Number of Players (CVXPY estimate) </h2>
-                <canvas id="myChart5" width="900" height="220"></canvas>
+                <canvas id="myChart5" width="400" height="220"></canvas>
                     <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
                     <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
                     <script type="text/javascript">
@@ -115,7 +111,12 @@
                             var ctx = $("#myChart5").get(0).getContext("2d");
                             myChart5 = new Chart(ctx, {
                                 type: 'line', data: data, options: {
-                                    responsive: false
+                                    responsive: false,
+                                    title: {
+                                        display: true,
+                                        text: 'Number of Players (CVXPY Estimate)',
+                                        fontSize: 14
+                                    }
                                 }
                             });
                         });
@@ -135,12 +136,13 @@
                 </body>
             </div>
         </div>
+	</div>
+
+    <div class="flex-container">
         <div>
             <div>
                 <body>
-                    <h2>Avg Pot Size</h2>
-
-                    <canvas id="myChart2" width="900" height="220"></canvas>
+                    <canvas id="myChart2" width="600" height="220"></canvas>
 
                     <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
                     <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
@@ -149,9 +151,14 @@
                             var ctx = $("#myChart2").get(0).getContext("2d");
                             myChart2 = new Chart(ctx, {
                                 type: 'line', data: data, options:
-                        {
-                            responsive: false
-                        }
+                                    {
+                                        responsive: false,
+                                        title: {
+                                            display: true,
+                                            text: 'Average Pot Size',
+                                            fontSize: 14
+                                        }
+                                    }
                             });
                         });
                     </script>
@@ -166,15 +173,11 @@
                 </body>
             </div>
         </div> 
-    </div>
-
-    <div class="flex-container">
         <div>
             <div>
                 <body>
-                    <h2>Percent to Flop</h2>
 
-                    <canvas id="myChart3" width="900" height="220"></canvas>
+                    <canvas id="myChart3" width="600" height="220"></canvas>
 
                     <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
                     <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
@@ -182,9 +185,14 @@
                         $.get('{% url "line_chart_pct_flop_json" %}', function(data) {
                             var ctx = $("#myChart3").get(0).getContext("2d");
                             myChart3 = new Chart(ctx, {
-                        type: 'line', data: data, options: {
-                            responsive: false
-                        }
+                                type: 'line', data: data, options: {
+                                    responsive: false,
+                                    title: {
+                                        display: true,
+                                        text: 'Percent to Flop',
+                                        fontSize: 14
+                                    }
+                            }
                             });
                         });
                         // console.log($.get('{% url "line_chart_pct_flop_json" %}'))
@@ -200,8 +208,8 @@
                 </body>
             </div>        
         </div>
-        <div>2</div>
     </div>
+
 
 
 
