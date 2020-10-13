@@ -168,4 +168,22 @@ def clean_screenshots():
 
 @task()
 def stitch_photos():
+    ax1 = ["num_ppl","avg_pot_fishy","avg_pot","plrs_flop"]
+    ax2 = [str(elem) for elem in list(range(5))]
 
+    #creates a new empty image, RGB mode, and size 400 by 400.
+    new_im = Image.new('RGB', (500,200))
+
+    #Iterate through a 4 by 4 grid with 100 spacing, to place my image
+    for i in range(0,500,100):
+        for j in range(0,200,50):
+            #opens an image:
+            # print(j//50,i//100)
+            im = Image.open("/ignition/static/ignition/fishy_ocr/{}.png".format(ax1[j//50]+"_"+ax2[i//100]))
+            im.thumbnail((100,100))
+            im = Image.eval(im,lambda x: x)
+            #paste the image at location i,j:
+            new_im.paste(im, (i,j))
+
+    # new_im.show()
+    new_im.save("/ignition/static/ignition/fishy_ocr/stitched_fishy_ocrs.png")
