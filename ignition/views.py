@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from chartjs.views.lines import BaseLineChartView
 
-from ignition.models import IgnitionRow
+from ignition.models import IgnitionRow,IgnitionRowPredictionOLS,IgnitionRowPredictionCVX
 
 import numpy as np
 import pandas as pd 
@@ -41,6 +41,7 @@ class LineChartJSONView(BaseLineChartView):
         """Return 3 datasets to plot."""
         data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
         two_hours = data[::-1]
+        #two_hours = data
         num_players_data = [[max(min(elem['num_players_{}'.format(key)],50),0) for elem in two_hours] for key in self.keys]
         return num_players_data
 
@@ -63,35 +64,10 @@ class LineChartNumPlrsPred(BaseLineChartView):
 
     def get_data(self):
         """Return 3 datasets to plot."""
-        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        data = list(IgnitionRowPredictionOLS.objects.all().order_by('-pub_date')[:self.num_ticks].values())
         two_hours = data[::-1]
-        data = pd.DataFrame(two_hours)
-        data['pub_date'] = data.apply(lambda x: str(x['pub_date']),axis=1)
-        data['pub_date_struct'] = data.apply(lambda x: time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z"),axis=1)
-        data.index = data.apply(lambda x: datetime.fromtimestamp(mktime(x['pub_date_struct'])),axis=1)
-        data['hour'] = data.apply(lambda x: str(time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z")[3]), axis=1)
-        data['day_of_week'] = data.index.map(lambda x: x.weekday())
-        data['hour'] = pd.Categorical(
-            data['hour'], categories=list(range(24)))
-        data['day_of_week'] = pd.Categorical(
-            data['day_of_week'], categories=list(range(7)))
-        hour_dummies = pd.get_dummies(data['hour'], drop_first=True)
-        hour_dummies.columns = ['h'+ str(elem) for elem in hour_dummies.columns]
-        day_of_week_dummies = pd.get_dummies(data['day_of_week'], drop_first=True)
-        day_of_week_dummies.columns = ['dow'+str(elem) for elem in day_of_week_dummies.columns]
-        data = pd.concat((data,hour_dummies,day_of_week_dummies), axis=1)
-        results5 = OLSResults.load("ols_9_21_data_5.pickle")
-        results25 = OLSResults.load("ols_9_21_data_25.pickle")
-        results50 = OLSResults.load("ols_9_21_data_50.pickle")
-        results200 = OLSResults.load("ols_9_21_data_200.pickle")
-        results500 = OLSResults.load("ols_9_21_data_500.pickle")
-        preds5 = results5.predict(data)
-        preds25 = results25.predict(data)
-        preds50 = results50.predict(data)
-        preds200 = results200.predict(data)
-        preds500 = results500.predict(data)
-        preds = [preds5,preds25,preds50,preds200,preds500]
-        return [[int(elem) for elem in pred.values] for pred in preds]
+        num_players_data = [[elem['num_players_{}'.format(key)] for elem in two_hours] for key in self.keys]
+        return num_players_data
 
 class LineChartNumPlrsPredCVX(BaseLineChartView):
 
