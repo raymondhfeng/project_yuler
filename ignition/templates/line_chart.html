@@ -2,7 +2,7 @@
 <html>
     <style>
     div {
-      margin: 20px;
+      margin: 5px;
       /*border: 1px solid #4CAF50;*/
     } 
     h2 {
@@ -15,9 +15,9 @@
 
     .flex-container > div {
 	      background-color: #f1f1f1;
-	        margin: 10px;
-		  padding: 20px;
-		    font-size: 15px;
+	        margin: 5px;
+		  padding: 5px;
+		    font-size: 13px;
     }
     </style>
     <head>
@@ -30,8 +30,7 @@
 		    <div>
     			<body>
 
-        			<h2>Number of Players</h2>
-        			<canvas id="myChart" width="600" height="220"></canvas>
+        			<canvas id="myChart" width="400" height="220"></canvas>
         			    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
         			    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
         			    <script type="text/javascript">
@@ -39,7 +38,11 @@
         				    var ctx = $("#myChart").get(0).getContext("2d");
         				    myChart = new Chart(ctx, {
         				type: 'line', data: data, options: {
-        				    responsive: false
+        				    responsive: false,
+						title: {
+							display: true,
+							text: 'Number of Players'
+						}
         				}
         				    });
         				});
@@ -63,8 +66,7 @@
             <div>
                 <body>
 
-                <h2>Number of Players (OLS estimate) </h2>
-                <canvas id="myChart4" width="900" height="220"></canvas>
+                <canvas id="myChart4" width="600" height="220"></canvas>
                     <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
                     <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
                     <script type="text/javascript">
@@ -72,7 +74,12 @@
                             var ctx = $("#myChart4").get(0).getContext("2d");
                             myChart4 = new Chart(ctx, {
                                 type: 'line', data: data, options: {
-                                    responsive: false
+                                    responsive: false,
+					title: {
+						display: true,
+						text: 'Number of Players (OLS Estimate)',
+						fontSize: 14
+					}
                                 }
                             });
                         });
