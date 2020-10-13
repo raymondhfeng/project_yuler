@@ -25,6 +25,10 @@
     }
     h1 {text-align: center;}
     h3 {text-align: center;}
+    table, th, td {
+	      border: 1px solid black;
+	        border-collapse: collapse;
+    }
     </style>
     <head>
 	    <link rel="icon" type="image/png" href="{% static 'ignition/spades-512.png' %}">
@@ -218,6 +222,58 @@
 
     <div class="flex-container">
         <div>
+		<br>
+		<h3>Estimated Number of People <br> (As of {{recentRow.pub_date}} Refresh to update)</h3>
+		<table align="center">
+			<tr>
+				<th>Stake</th>
+				<th>#Plrs</th>
+				<th>OLSEst</th>
+				<th>CVXEst</th>
+			</tr>
+			<tr>
+				<td style="text-align:center">5NL</td>
+				<td style="text-align:right">{{ recentRow.num_players_5 }}</td>
+				<td style="text-align:right">{{ olsRow.num_players_5 }}</td>
+				<td style="text-align:right">{{ cvxRow.num_players_5 }}</td>
+			</tr>
+			<tr>
+				<td style="text-align:center">25NL</td>
+				<td style="text-align:right">{{ recentRow.num_players_25 }}</td>
+				<td style="text-align:right">{{ olsRow.num_players_25 }}</td>
+				<td style="text-align:right">{{ cvxRow.num_players_25 }}</td>
+			</tr>
+			<tr>
+				<td style="text-align:center">50NL</td>
+				<td style="text-align:right">{{ recentRow.num_players_50 }}</td>
+				<td style="text-align:right">{{ olsRow.num_players_50 }}</td>
+				<td style="text-align:right">{{ cvxRow.num_players_50 }}</td>
+			</tr>
+			<tr>
+				<td style="text-align:center">200NL</td>
+				<td style="text-align:right">{{ recentRow.num_players_200 }}</td>
+				<td style="text-align:right">{{ olsRow.num_players_200 }}</td>
+				<td style="text-align:right">{{ cvxRow.num_players_200 }}</td>
+			</tr>
+			<tr>
+				<td style="text-align:center">500NL</td>
+				<td style="text-align:right">{{ recentRow.num_players_500 }}</td>
+				<td style="text-align:right">{{ olsRow.num_players_500 }}</td>
+				<td style="text-align:right">{{ cvxRow.num_players_500 }}</td>
+			</tr>
+			<tr>
+				<td style="text-align:center"><b>Total</b></td>
+				<td style="text-align:right">{{ recentSum }}</td>
+				<td style="text-align:right">{{ olsSum }}</td>
+				<td style="text-align:right">{{ cvxSum }}</td>
+			</tr>
+			<tr>
+				<td style="text-align:center"><b>3 Day Max</b></td>
+				<td style="text-align:right">Todo</td>
+				<td style="text-align:right">Todo</td>
+				<td style="text-align:right">Todo</td>
+			</tr>
+		</table>
         </div> 
         <div>     
         </div>

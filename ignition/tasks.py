@@ -23,6 +23,8 @@ from datetime import datetime, timedelta
 from time import mktime
 from statsmodels.regression.linear_model import OLSResults
 
+from PIL import Image
+
 
 @task()
 def task_number_one():
@@ -163,3 +165,7 @@ def clean_screenshots():
     files = glob.glob('/home/pi/screenshots/*')
     for f in files:
         os.remove(f)
+
+@task()
+def stitch_photos():
+

@@ -145,8 +145,26 @@ class LineChartPctFlop(BaseLineChartView):
         pct_flop_data = [[min(elem, 100) for elem in arr] for arr in pct_flop_data] # Assume a max pot size of 2000 BBs
         return pct_flop_data
 
+class LineChart(TemplateView):
+    template_name = 'line_chart.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        recentRow = list(IgnitionRow.objects.all().order_by('-pub_date')[:1].values())[0]
+        olsRow = list(IgnitionRowPredictionOLS.objects.all().order_by('-pub_date')[:1].values())[0]
+        cvxRow = list(IgnitionRowPredictionCVX.objects.all().order_by('-pub_date')[:1].values())[0]
+        context['recentRow'] = recentRow
+        context['olsRow'] = olsRow
+        context['cvxRow'] = cvxRow 
+        keys = ['5','25','50','200','500']
+        context['recentSum'] = sum([recentRow["num_players_{}".format(key)] for key in keys]) 
+        context['olsSum'] = sum([olsRow["num_players_{}".format(key)] for key in keys]) 
+        context['cvxSum'] = sum([cvxRow["num_players_{}".format(key)] for key in keys]) 
+
+        return context
 
 line_chart = TemplateView.as_view(template_name='line_chart.html')
+line_chart = LineChart.as_view()
+
 avg_pot_line_chart = TemplateView.as_view(template_name='line_chart_avg_pot.html')
 pct_flop_line_chart = TemplateView.as_view(template_name='line_chart_pct_flop.html')
 line_chart_json = LineChartJSONView.as_view()
