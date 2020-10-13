@@ -26,197 +26,177 @@
     </head>
 
 	<div class="flex-container">
-		  <div>
+		<div>
 		    <div>
-			<body>
+    			<body>
 
-			<h2>Number of Players</h2>
-			<canvas id="myChart" width="600" height="220"></canvas>
-			    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-			    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
-			    <script type="text/javascript">
-				$.get('{% url "line_chart_json" %}', function(data) {
-				    var ctx = $("#myChart").get(0).getContext("2d");
-				    myChart = new Chart(ctx, {
-				type: 'line', data: data, options: {
-				    responsive: false
-				}
-				    });
-				});
-			    </script>
-			    <script type="text/javascript">
-				setInterval(function() {
-				    $.get('{% url "line_chart_json" %}', function(data) {
-					myChart.data = data
-					myChart.update()
-				    });
-				}, 60 * 1000);
-			    </script>
-			<script type="text/javascript">
-			    setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
-			    }, 60 * 1000);
-			</script>
-			</body>
+        			<h2>Number of Players</h2>
+        			<canvas id="myChart" width="600" height="220"></canvas>
+        			    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+        			    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+        			    <script type="text/javascript">
+        				$.get('{% url "line_chart_json" %}', function(data) {
+        				    var ctx = $("#myChart").get(0).getContext("2d");
+        				    myChart = new Chart(ctx, {
+        				type: 'line', data: data, options: {
+        				    responsive: false
+        				}
+        				    });
+        				});
+        			    </script>
+        			    <script type="text/javascript">
+        				setInterval(function() {
+        				    $.get('{% url "line_chart_json" %}', function(data) {
+        					myChart.data = data
+        					myChart.update()
+        				    });
+        				}, 60 * 1000);
+        			    </script>
+        			<script type="text/javascript">
+        			    setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
+        			    }, 60 * 1000);
+        			</script>
+    			</body>
 		    </div>
-		  </div>
-		    <div>2</div>
-		      <div>3</div>  
+		</div>
+		<div>
+            <div>
+                <body>
+
+                <h2>Number of Players (OLS estimate) </h2>
+                <canvas id="myChart4" width="900" height="220"></canvas>
+                    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+                    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+                    <script type="text/javascript">
+                        $.get('{% url "line_chart_num_plrs_pred_json" %}', function(data) {
+                            var ctx = $("#myChart4").get(0).getContext("2d");
+                            myChart4 = new Chart(ctx, {
+                                type: 'line', data: data, options: {
+                                    responsive: false
+                                }
+                            });
+                        });
+                    </script>
+                    <script type="text/javascript">
+                        setInterval(function() {
+                            $.get('{% url "line_chart_num_plrs_pred_json" %}', function(data) {
+                                myChart4.data = data
+                                myChart4.update()
+                            });
+                        }, 60 * 1000);
+                    </script>
+                <script type="text/javascript">
+                    setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
+                    }, 60 * 1000);
+                </script>
+                </body>
+            </div>
+        </div>
 	</div>
-    <div>
-        <body>
 
-        <h2>Number of Players</h2>
-        <canvas id="myChart" width="900" height="220"></canvas>
-            <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-            <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
-            <script type="text/javascript">
-                $.get('{% url "line_chart_json" %}', function(data) {
-                    var ctx = $("#myChart").get(0).getContext("2d");
-                    myChart = new Chart(ctx, {
-                type: 'line', data: data, options: {
-                    responsive: false
-                }
-                    });
-                });
-            </script>
-            <script type="text/javascript">
-                setInterval(function() {
-                    $.get('{% url "line_chart_json" %}', function(data) {
-                        myChart.data = data
-                        myChart.update()
-                    });
-                }, 60 * 1000);
-            </script>
-        <script type="text/javascript">
-            setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
-            }, 60 * 1000);
-        </script>
-        </body>
+    <div class="flex-container">
+        <div>
+            <div>
+                <body>
+
+                <h2>Number of Players (CVXPY estimate) </h2>
+                <canvas id="myChart5" width="900" height="220"></canvas>
+                    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+                    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+                    <script type="text/javascript">
+                        $.get('{% url "line_chart_num_plrs_pred_cvx_json" %}', function(data) {
+                            var ctx = $("#myChart5").get(0).getContext("2d");
+                            myChart5 = new Chart(ctx, {
+                                type: 'line', data: data, options: {
+                                    responsive: false
+                                }
+                            });
+                        });
+                    </script>
+                    <script type="text/javascript">
+                        setInterval(function() {
+                            $.get('{% url "line_chart_num_plrs_pred_cvx_json" %}', function(data) {
+                                myChart5.data = data
+                                myChart5.update()
+                            });
+                        }, 60 * 1000);
+                    </script>
+                <script type="text/javascript">
+                    setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
+                    }, 60 * 1000);
+                </script>
+                </body>
+            </div>
+        </div>
+        <div>
+            <div>
+                <body>
+                    <h2>Avg Pot Size</h2>
+
+                    <canvas id="myChart2" width="900" height="220"></canvas>
+
+                    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+                    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+                    <script type="text/javascript">
+                        $.get('{% url "line_chart_avg_pot_json" %}', function(data) {
+                            var ctx = $("#myChart2").get(0).getContext("2d");
+                            myChart2 = new Chart(ctx, {
+                                type: 'line', data: data, options:
+                        {
+                            responsive: false
+                        }
+                            });
+                        });
+                    </script>
+                    <script>
+                        setInterval(function() {
+                            $.get('{% url "line_chart_avg_pot_json" %}', function(data) {
+                                myChart2.data = data
+                                myChart2.update()
+                            });
+                        }, 60 * 1000);
+                    </script>
+                </body>
+            </div>
+        </div> 
     </div>
 
-    <div>
-        <body>
+    <div class="flex-container">
+        <div>
+            <div>
+                <body>
+                    <h2>Percent to Flop</h2>
 
-        <h2>Number of Players (OLS estimate) </h2>
-        <canvas id="myChart4" width="900" height="220"></canvas>
-            <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-            <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
-            <script type="text/javascript">
-                $.get('{% url "line_chart_num_plrs_pred_json" %}', function(data) {
-                    var ctx = $("#myChart4").get(0).getContext("2d");
-                    myChart4 = new Chart(ctx, {
+                    <canvas id="myChart3" width="900" height="220"></canvas>
+
+                    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+                    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+                    <script type="text/javascript">
+                        $.get('{% url "line_chart_pct_flop_json" %}', function(data) {
+                            var ctx = $("#myChart3").get(0).getContext("2d");
+                            myChart3 = new Chart(ctx, {
                         type: 'line', data: data, options: {
                             responsive: false
                         }
-                    });
-                });
-            </script>
-            <script type="text/javascript">
-                setInterval(function() {
-                    $.get('{% url "line_chart_num_plrs_pred_json" %}', function(data) {
-                        myChart4.data = data
-                        myChart4.update()
-                    });
-                }, 60 * 1000);
-            </script>
-        <script type="text/javascript">
-            setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
-            }, 60 * 1000);
-        </script>
-        </body>
+                            });
+                        });
+                        // console.log($.get('{% url "line_chart_pct_flop_json" %}'))
+                    </script>
+                    <script>
+                        setInterval(function() {
+                            $.get('{% url "line_chart_pct_flop_json" %}', function(data) {
+                                myChart3.data = data
+                                myChart3.update()
+                            });
+                        }, 60 * 1000); // 60 * 1000 milsec
+                    </script>
+                </body>
+            </div>        
+        </div>
+        <div>2</div>
     </div>
 
-    <div>
-        <body>
 
-        <h2>Number of Players (CVXPY estimate) </h2>
-        <canvas id="myChart5" width="900" height="220"></canvas>
-            <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-            <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
-            <script type="text/javascript">
-                $.get('{% url "line_chart_num_plrs_pred_cvx_json" %}', function(data) {
-                    var ctx = $("#myChart5").get(0).getContext("2d");
-                    myChart5 = new Chart(ctx, {
-                        type: 'line', data: data, options: {
-                            responsive: false
-                        }
-                    });
-                });
-            </script>
-            <script type="text/javascript">
-                setInterval(function() {
-                    $.get('{% url "line_chart_num_plrs_pred_cvx_json" %}', function(data) {
-                        myChart5.data = data
-                        myChart5.update()
-                    });
-                }, 60 * 1000);
-            </script>
-        <script type="text/javascript">
-            setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
-            }, 60 * 1000);
-        </script>
-        </body>
-    </div>
-
-    <div>
-        <body>
-            <h2>Avg Pot Size</h2>
-
-            <canvas id="myChart2" width="900" height="220"></canvas>
-
-            <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-            <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
-            <script type="text/javascript">
-                $.get('{% url "line_chart_avg_pot_json" %}', function(data) {
-                    var ctx = $("#myChart2").get(0).getContext("2d");
-                    myChart2 = new Chart(ctx, {
-                        type: 'line', data: data, options:
-    			{
-    				responsive: false
-    			}
-                    });
-                });
-            </script>
-            <script>
-                setInterval(function() {
-                    $.get('{% url "line_chart_avg_pot_json" %}', function(data) {
-                        myChart2.data = data
-                        myChart2.update()
-                    });
-                }, 60 * 1000);
-            </script>
-        </body>
-    </div>
-
-    <div>
-        <body>
-            <h2>Percent to Flop</h2>
-
-            <canvas id="myChart3" width="900" height="220"></canvas>
-
-            <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-            <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
-            <script type="text/javascript">
-                $.get('{% url "line_chart_pct_flop_json" %}', function(data) {
-                    var ctx = $("#myChart3").get(0).getContext("2d");
-                    myChart3 = new Chart(ctx, {
-    			type: 'line', data: data, options: {
-    				responsive: false
-    			}
-                    });
-                });
-                // console.log($.get('{% url "line_chart_pct_flop_json" %}'))
-            </script>
-            <script>
-                setInterval(function() {
-                    $.get('{% url "line_chart_pct_flop_json" %}', function(data) {
-                        myChart3.data = data
-                        myChart3.update()
-                    });
-                }, 60 * 1000); // 60 * 1000 milsec
-            </script>
-        </body>
-    </div>
 
 	<style>
     	.row {
