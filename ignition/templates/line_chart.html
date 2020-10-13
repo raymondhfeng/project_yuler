@@ -8,12 +8,60 @@
     h2 {
         text-align: left;
     }
+    .flex-container {
+	      display: flex;
+	        background-color: DodgerBlue;
+    }
+
+    .flex-container > div {
+	      background-color: #f1f1f1;
+	        margin: 10px;
+		  padding: 20px;
+		    font-size: 15px;
+    }
     </style>
     <head>
 	    <link rel="icon" type="image/png" href="{% static 'ignition/spades-512.png' %}">
 	    <title>Poker Time Series</title>
     </head>
 
+	<div class="flex-container">
+		  <div>
+		    <div>
+			<body>
+
+			<h2>Number of Players</h2>
+			<canvas id="myChart" width="600" height="220"></canvas>
+			    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+			    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+			    <script type="text/javascript">
+				$.get('{% url "line_chart_json" %}', function(data) {
+				    var ctx = $("#myChart").get(0).getContext("2d");
+				    myChart = new Chart(ctx, {
+				type: 'line', data: data, options: {
+				    responsive: false
+				}
+				    });
+				});
+			    </script>
+			    <script type="text/javascript">
+				setInterval(function() {
+				    $.get('{% url "line_chart_json" %}', function(data) {
+					myChart.data = data
+					myChart.update()
+				    });
+				}, 60 * 1000);
+			    </script>
+			<script type="text/javascript">
+			    setInterval( function() { document.getElementById("container").src += `?v=${new Date().getTime()}`;
+			    }, 60 * 1000);
+			</script>
+			</body>
+		    </div>
+		  </div>
+		    <div>2</div>
+		      <div>3</div>  
+	</div>
     <div>
         <body>
 
