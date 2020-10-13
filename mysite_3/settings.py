@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['8afdce4bb3a3.ngrok.io','058a7295c294.ngrok.io','54ab765a3bf6.ngrok.io','23cdf674e978.ngrok.io','45471f846089.ngrok.io','eab44cb79223.ngrok.io','d2ac2bf534a4.ngrok.io', '60e8fb50f3d2.ngrok.io' ,'0c36d91605b6.ngrok.io','dbc0fc93ea18.ngrok.io', '127.0.0.1']
 
+INTERNAL_IPS = ['71.202.181.19','127.0.0.1']
 
 # Application definition
 
@@ -40,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+    'debug_toolbar'
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,7 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
 
 ROOT_URLCONF = 'mysite_3.urls'
 

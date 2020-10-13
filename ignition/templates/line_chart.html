@@ -234,52 +234,76 @@
     <div class="flex-container">
         <div>
 		<br>
-		<h3>Estimated Number of People <br> (As of {{recentRow.pub_date}} Refresh to update)</h3>
+		<h3>Statistics <br> (As of {{recentRow.pub_date}} Refresh to update)</h3>
 		<table align="center">
 			<tr>
 				<th>Stake</th>
 				<th>#Plrs</th>
 				<th>OLSEst</th>
 				<th>CVXEst</th>
+				<th>PctToFlop</th>
+				<th>AvgPot</th>
 			</tr>
 			<tr>
 				<td style="text-align:center">5NL</td>
 				<td style="text-align:right">{{ recentRow.num_players_5 }}</td>
 				<td style="text-align:right">{{ olsRow.num_players_5 }}</td>
 				<td style="text-align:right">{{ cvxRow.num_players_5 }}</td>
+				<td style="text-align:right">{{ recentRow.pct_flop_5 }}</td>
+				<td style="text-align:right">{{ recentRow.avg_pot_5 }}</td>
 			</tr>
 			<tr>
 				<td style="text-align:center">25NL</td>
 				<td style="text-align:right">{{ recentRow.num_players_25 }}</td>
 				<td style="text-align:right">{{ olsRow.num_players_25 }}</td>
 				<td style="text-align:right">{{ cvxRow.num_players_25 }}</td>
+				<td style="text-align:right">{{ recentRow.pct_flop_25 }}</td>
+				<td style="text-align:right">{{ recentRow.avg_pot_25 }}</td>
 			</tr>
 			<tr>
 				<td style="text-align:center">50NL</td>
 				<td style="text-align:right">{{ recentRow.num_players_50 }}</td>
 				<td style="text-align:right">{{ olsRow.num_players_50 }}</td>
 				<td style="text-align:right">{{ cvxRow.num_players_50 }}</td>
+				<td style="text-align:right">{{ recentRow.pct_flop_50 }}</td>
+				<td style="text-align:right">{{ recentRow.avg_pot_50 }}</td>
 			</tr>
 			<tr>
 				<td style="text-align:center">200NL</td>
 				<td style="text-align:right">{{ recentRow.num_players_200 }}</td>
 				<td style="text-align:right">{{ olsRow.num_players_200 }}</td>
 				<td style="text-align:right">{{ cvxRow.num_players_200 }}</td>
+				<td style="text-align:right">{{ recentRow.pct_flop_200 }}</td>
+				<td style="text-align:right">{{ recentRow.avg_pot_200 }}</td>
 			</tr>
 			<tr>
 				<td style="text-align:center">500NL</td>
 				<td style="text-align:right">{{ recentRow.num_players_500 }}</td>
 				<td style="text-align:right">{{ olsRow.num_players_500 }}</td>
 				<td style="text-align:right">{{ cvxRow.num_players_500 }}</td>
+				<td style="text-align:right">{{ recentRow.pct_flop_500 }}</td>
+				<td style="text-align:right">{{ recentRow.avg_pot_500 }}</td>
 			</tr>
 			<tr>
 				<td style="text-align:center"><b>Total</b></td>
 				<td style="text-align:right">{{ recentSum }}</td>
 				<td style="text-align:right">{{ olsSum }}</td>
 				<td style="text-align:right">{{ cvxSum }}</td>
+				<td style="text-align:right">n/a</td>
+				<td style="text-align:right">n/a</td>
 			</tr>
 			<tr>
 				<td style="text-align:center"><b>3 Day Max</b></td>
+				<td style="text-align:right">Todo</td>
+				<td style="text-align:right">Todo</td>
+				<td style="text-align:right">Todo</td>
+				<td style="text-align:right">Todo</td>
+				<td style="text-align:right">Todo</td>
+			</tr>
+			<tr>
+				<td style="text-align:center"><b>3 Day Avg</b></td>
+				<td style="text-align:right">Todo</td>
+				<td style="text-align:right">Todo</td>
 				<td style="text-align:right">Todo</td>
 				<td style="text-align:right">Todo</td>
 				<td style="text-align:right">Todo</td>
