@@ -1,3 +1,4 @@
 celerybeat-schedule.db
 db.sqlite3
 dump.rdb
+__pycache__/
