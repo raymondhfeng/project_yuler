@@ -8,7 +8,6 @@ from ignition.models import IgnitionRow,IgnitionRowPredictionOLS,IgnitionRowPred
 
 import numpy as np
 import pandas as pd 
-import matplotlib.pyplot as plt
 import statsmodels.formula.api as sm
 import time
 from datetime import datetime, timedelta
