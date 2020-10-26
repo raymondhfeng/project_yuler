@@ -25,7 +25,7 @@ SECRET_KEY = 'grm_^s^m1&m)417)6t2@5onj)su-xu3&w=u6azf+e#eb5up#u8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8059fb1b37a6.ngrok.io','71747286822b.ngrok.io','92bc709bb4bf.ngrok.io','8afdce4bb3a3.ngrok.io','058a7295c294.ngrok.io','54ab765a3bf6.ngrok.io','23cdf674e978.ngrok.io','45471f846089.ngrok.io','eab44cb79223.ngrok.io','d2ac2bf534a4.ngrok.io', '60e8fb50f3d2.ngrok.io' ,'0c36d91605b6.ngrok.io','dbc0fc93ea18.ngrok.io', '127.0.0.1']
+ALLOWED_HOSTS = ['d1801f86ab5d.ngrok.io','8059fb1b37a6.ngrok.io','71747286822b.ngrok.io','92bc709bb4bf.ngrok.io','8afdce4bb3a3.ngrok.io','058a7295c294.ngrok.io','54ab765a3bf6.ngrok.io','23cdf674e978.ngrok.io','45471f846089.ngrok.io','eab44cb79223.ngrok.io','d2ac2bf534a4.ngrok.io', '60e8fb50f3d2.ngrok.io' ,'0c36d91605b6.ngrok.io','dbc0fc93ea18.ngrok.io', '127.0.0.1']
 
 INTERNAL_IPS = ['71.202.181.19','127.0.0.1']
 
