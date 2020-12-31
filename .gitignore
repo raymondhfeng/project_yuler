@@ -2,3 +2,4 @@ celerybeat-schedule.db
 db.sqlite3
 dump.rdb
 __pycache__/
+ignition/static/ignition/fishy_ocr/

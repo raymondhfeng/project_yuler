@@ -48,16 +48,9 @@ xmp {
         <xmp>
         git clone 
           https://github.com/raymondhfeng-wttec/django-tutorial
-        sudo apt-get update
-        sudo apt-get install curl
-        curl -0 insert anaconda link
-        run the bash install script
         </xmp>
 
-        <p>good tutorial for install anaconda on ubuntu. i prefer conda over venv. either works. i used miniconda because I am on a raspberry pi. I did development on mac but am deploying on a raspberry pi.</p>
-
-        start with sqlite for now but will upgrade later
-        install django
+	<xmp>
         python3 -n pip install Django
         needed to upgrade python on raspberry pi: https://gist.github.com/dschep/24aa61672a2092246eaca2824400d37f
         sudo python3.6 -m pip install Django
@@ -66,8 +59,15 @@ xmp {
         make redis
         redis-server
         sudo python3.6 -m pip install celery==4.0.2
+	</xmp>
 
 	<xmp>
+	https://github.com/tesseract-ocr/tesseract/issues/1309
+	https://stackoverflow.com/questions/50655738/how-do-i-resolve-a-tesseractnotfounderror
+	requests
+	statsmodels
+	psycopg2
+	django-debug-toolbar
 	https://pypi.org/project/django-chartjs/
         sudo python3.6 -m pip install django-chartjs
         sudo python3.6 -m pip install redis
@@ -104,6 +104,7 @@ xmp {
         </xmp>
         <p> Need to import the OCR code module, a bunch of requirements are necessary, as the celery task is dependent on that. Also need to install Chartjs (INSERT TUTORIAL SITE).</p>
 
+https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-16-04
 	<h2>Future Work</h2>
 	<ul>
 	<li>Change from SQLite to Postgres</li>
