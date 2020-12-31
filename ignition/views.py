@@ -113,9 +113,14 @@ class LineChartAvgPot(BaseLineChartView):
         """Return 3 datasets to plot."""
         data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
         two_hours = data[::-1] # The most recent two hours of data
-        avg_pot_data = [[float(elem['avg_pot_{}'.format(key)]) / (int(key) / 100) for elem in two_hours] 
+#         print([elem['avg_pot_5'] for elem in two_hours])
+#         avg_pot_data = [[float(elem['avg_pot_{}'.format(key)]) / (int(key) / 100) for elem in two_hours]
+        avg_pot_data = [[float(elem['avg_pot_{}'.format(key)]) for elem in two_hours] 
         	for key in self.keys]
+#         print(avg_pot_data[0][-5:])
         avg_pot_data = [[max(min(elem, 100),0) for elem in arr] for arr in avg_pot_data] # Assume a max pot size of 2000 BBs
+        avg_pot_data = [[elem if elem != 100 else 0 for elem in arr] for arr in avg_pot_data] # Assume a max pot size of 2000 BBs
+#         print(avg_pot_data[0][-5:])
         return avg_pot_data
 
 class LineChartPctFlop(BaseLineChartView):

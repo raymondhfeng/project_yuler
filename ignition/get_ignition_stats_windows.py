@@ -5,6 +5,8 @@ def get_stats():
         # https://github.com/celery/celery/issues/2964  
 
         from PIL import Image
+
+        # For debugging purposes
         from PIL import ImageDraw
         from PIL import ImageFont
 
@@ -14,11 +16,8 @@ def get_stats():
         import cv2
         import numpy as np
         import pandas as pd
-        import csv
         import pytesseract
         from datetime import datetime
-
-        DEBUG = False
 
         def add_margin(pil_img, top, right, bottom, left, color):
             width, height = pil_img.size
@@ -28,27 +27,18 @@ def get_stats():
             result.paste(pil_img, (left, top))
             return result
 
-        if DEBUG:
-            latest_file = '/Users/raymondfeng/Desktop/TrickyWays/cropped/chubert.jpeg'
-        else:
-            list_of_files = glob.glob('/home/pi/screenshots/*') 
-            latest_file = max(list_of_files, key=os.path.getctime) 
+        list_of_files = glob.glob('/home/pi/screenshots/*') 
+        latest_file = max(list_of_files, key=os.path.getctime) 
           
         left = 292
         top = 364 - 9
         right = 908 + 8
         bottom = 466 - 9
 
-        if DEBUG:
-            img = canny_edge(latest_file) 
-            img = img[top:bottom, left:right] 
-            cv2.imwrite('/Users/raymondfeng/Desktop/TrickyWays/cropped/chubert_cropped.jpeg', img)
-            im = Image.open('/Users/raymondfeng/Desktop/TrickyWays/cropped/chubert_cropped.jpeg')
-        else:
-            im = canny_edge(latest_file)
-            im = im[top:bottom, left:right]
-            cv2.imwrite('/home/pi/cropped.jpeg', im)
-            im = Image.open('/home/pi/cropped.jpeg')
+        im = canny_edge(latest_file) # auto cropping to the gui using edge detection
+        im = im[top:bottom, left:right] # manually cropping to data area
+        cv2.imwrite('/home/pi/cropped.jpeg', im)
+        im = Image.open('/home/pi/cropped.jpeg')
 
         font = ImageFont.truetype("/home/pi/open-sans/OpenSans-Regular.ttf", 52)
 
@@ -60,26 +50,20 @@ def get_stats():
         for i in range(num_rows):
                 img = im.crop((left, i*y_delta,
                         left+num_ppl_width, (i+1)*y_delta))
-                if DEBUG:
-                    path_name = os.path.join('/Users/raymondfeng/Downloads/pre_ocr', 
-                       str(datetime.now())[10:19].replace(':','_') + '_' + str(i) + '_' + 'num_ppl.png')
-                else: 
-                    path_name = os.path.join('/home/pi/pre_ocr', 
-                        str(datetime.now())[10:19].replace(':','_') + '_' + str(i) + '_' + 'num_ppl.png')
+                path_name = os.path.join('/home/pi/pre_ocr', 
+                    str(datetime.now())[10:19].replace(':','_') + '_' + str(i) + '_' + 'num_ppl.png')
                 img = img.resize((round(img.size[0]*10), round(img.size[1]*10)), Image.ANTIALIAS)
-                img.save(path_name)
-                img = cv2.imread(path_name, 0)
+                img = np.array(img)
+                img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
                 thresh, img = cv2.threshold(img,0,255,cv2.THRESH_BINARY + cv2.THRESH_OTSU)
                 img = 255 - img
-                cv2.imwrite(path_name, img)
-                img = Image.open(path_name)
+                img = Image.fromarray(img)
                 result = pytesseract.image_to_string(img, config='--psm 7 --oem 3 -c tessedit_char_whitelist=0123456789+')
                 draw = ImageDraw.Draw(img)    
                 draw.text((0, 0),str(result),(0),font=font)
                 img.save(path_name)
-                img.save("/home/pi/project_yuler/ignition/static/ignition/fishy_ocr/num_ppl_{}.png".format(i))
                 num_ppl.append(result)
-        blinds = [0.05,0.25,0.5,2.0,5.0]
+        
         avg_pot = []
         avg_pot_width = 64
         left = 487 + 5
@@ -88,29 +72,43 @@ def get_stats():
         for i in range(num_rows):
                 img = im.crop((left, i*y_delta,
                         left+avg_pot_width, (i+1)*y_delta))
-                img = add_margin(img, 5, 5, 5, 0, (0,0,0)) # Supposedly helps the OCR
-                if DEBUG:
-                    path_name = os.path.join('/Users/raymondfeng/Downloads/pre_ocr', 
-                       str(datetime.now())[10:19].replace(':','_') + '_' + str(i) + '_' + 'avg_pot.png')
-                else:
-                    path_name = os.path.join('/home/pi/pre_ocr', 
-                        str(datetime.now())[10:19].replace(':','_') + '_' + str(i) + '_' + 'avg_pot.png')
+                path_name = os.path.join('/home/pi/pre_ocr', 
+                    str(datetime.now())[10:19].replace(':','_') + '_' + str(i) + '_' + 'avg_pot.png')
                 img = img.resize((round(img.size[0]*10), round(img.size[1]*10)), Image.ANTIALIAS)
-                img.save(path_name)
-                img = cv2.imread(path_name, 0)
-                img = cv2.erode(img, np.ones((5,5), np.uint8), iterations=2)
+                img = np.array(img)
+                img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY);
+                
                 thresh, img = cv2.threshold(img,0,255,cv2.THRESH_BINARY + cv2.THRESH_OTSU)
                 img = 255 - img
-                cv2.imwrite(path_name, img)
-                img = Image.open(path_name)
-                result = pytesseract.image_to_string(img, config='--psm 10 --oem 3 -c tessedit_char_whitelist=.0123456789$')
+                
+                img = img.astype(np.uint8)
+                
+                img = 255 - img
+                img = cv2.erode(img, np.ones((3,2), np.uint8), iterations=5)
+                img = 255 - img
+                
+                contours, hierarchy = cv2.findContours(img,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+                
+                leftmost = float('inf')
+                if len(contours) == 0:
+                    leftmost = 0
+                leftmost_width = 0
+                for j in range(0, len(contours)):
+                    cnt = contours[j]
+                    x,y,w,h = cv2.boundingRect(cnt)
+                    if x != 0:
+                        leftmost = min(leftmost,x)
+                        leftmost_width = w
+                if leftmost != float('inf'):
+                    img = np.concatenate((255+np.zeros((img.shape[0],40)),img[:,leftmost+leftmost_width:-70]),axis=1)
+                
+                img = Image.fromarray(img).convert('L')                
+                result = pytesseract.image_to_string(img, config='--psm 8 --oem 3 -c tessedit_char_whitelist=.0123456789')
                 draw = ImageDraw.Draw(img)    
                 draw.text((0, 0),str(result),(0),font=font)
+    
                 img.save(path_name)    
-                img.save("/home/pi/project_yuler/ignition/static/ignition/fishy_ocr/avg_pot_{}.png".format(i))
                 if '.' not in result: result = result[:-2] + '.' + result[-2:] # TODO: This is clunky
-                if float(result.replace('$','').strip('.')) / blinds[i] > 40: # Unusual
-                    img.save("/home/pi/project_yuler/ignition/static/ignition/fishy_ocr/avg_pot_fishy_{}.png".format(i))
                 avg_pot.append(result)
         
 
@@ -123,35 +121,28 @@ def get_stats():
                 img = im.crop((left, i*y_delta,
                         left+plrs_flop_width, (i+1)*y_delta))
                 img = add_margin(img, 5, 0, 5, 0, (0,0,0)) # Supposedly helps the OCR
-                if DEBUG:
-                    path_name = os.path.join('/Users/raymondfeng/Downloads/pre_ocr', 
-                       str(datetime.now())[10:19].replace(':','_') + '_' + str(i) + '_' + 'plrs_flop.png')
-                else:
-                    path_name = os.path.join('/home/pi/pre_ocr', 
-                        str(datetime.now())[10:19].replace(':','_') + '_' + str(i) + '_' + 'plrs_flop.png')
+                path_name = os.path.join('/home/pi/pre_ocr', 
+                    str(datetime.now())[10:19].replace(':','_') + '_' + str(i) + '_' + 'plrs_flop.png')
                 img = img.resize((round(img.size[0]*12), round(img.size[1]*12)), Image.ANTIALIAS)
-                img.save(path_name)
-                img = cv2.imread(path_name, 0) 
+                img = np.array(img)
+                img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
                 img = cv2.erode(img, np.ones((5,5), np.uint8), iterations=2)
                 thresh, img = cv2.threshold(img,0,255,cv2.THRESH_BINARY + cv2.THRESH_OTSU)
                 img = 255 - img
-                cv2.imwrite(path_name, img)
-                img = Image.open(path_name)
+                img = Image.fromarray(img)
                 result = pytesseract.image_to_string(img, config='--psm 7 --oem 3 -c tessedit_char_whitelist=0123456789%') 
                 draw = ImageDraw.Draw(img)
                 draw.text((0, 0),str(result),(0),font=font)
                 img.save(path_name)
-                img.save("/home/pi/project_yuler/ignition/static/ignition/fishy_ocr/plrs_flop_{}.png".format(i))
                 plrs_flop.append(result)
 
         print(num_ppl, avg_pot, plrs_flop)
         return num_ppl, avg_pot, plrs_flop
 
-def canny_edge(file_path):
+def canny_edge(file_path): # https://stackoverflow.com/questions/45322630/how-to-detect-lines-in-opencv
         import cv2
         import numpy as np
         import math
-        # https://stackoverflow.com/questions/45322630/how-to-detect-lines-in-opencv
         img = cv2.imread(file_path)
         img = img[200:-200,200:-200] # Cropping the borders
 
