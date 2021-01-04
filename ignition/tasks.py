@@ -28,6 +28,7 @@ from PIL import Image
 
 @task()
 def task_number_one():
+        blinds = [0.05,0.25,0.5,2.0,5.0]
         num_ppl, avg_pot, plrs_flop = get_stats()
         for i in range(len(num_ppl)):
                 num_ppl[i] = num_ppl[i].replace('+','')
@@ -38,7 +39,7 @@ def task_number_one():
         for i in range(len(avg_pot)):
                 avg_pot[i] = avg_pot[i].replace('$','').strip('.')
                 try:
-                        avg_pot[i] = float(avg_pot[i])
+                        avg_pot[i] = (float(avg_pot[i])/100)/blinds[i]
                 except ValueError:
                         avg_pot[i] = -1
         for i in range(len(plrs_flop)):
@@ -148,9 +149,19 @@ def task_number_one():
 
 @task()
 def task_number_two():
+<<<<<<< HEAD
+    resp = requests.get("http://5b450b152fb9.ngrok.io/ignition_data")
+    # resp = requests.get("http://5a65fb8b1283.ngrok.io/ignition_data")
+    # resp = requests.get("http://8151cb7e441a.ngrok.io/ignition_data")
+=======
     # resp = requests.get('http://8151cb7e441a.ngrok.io/ignition_data')
+<<<<<<< HEAD
     resp = requests.get('http://5b450b152fb9.ngrok.io/ignition_data')
     # resp = requests.get('http://5a65fb8b1283.ngrok.io/ignition_data')
+=======
+    resp = requests.get('http://5a65fb8b1283.ngrok.io/ignition_data')
+>>>>>>> ac0424c6176f14cd5fd6d005835c6d96e03d9b14
+>>>>>>> ac81e6d96bad0289f75709cbc01f2649cd3f332f
     # resp = requests.get('http://2835dba625aa.ngrok.io/ignition_data') # TODO: Make this configurable
     img = json.loads(resp.text)['img']
     img = base64.b64decode(img)
