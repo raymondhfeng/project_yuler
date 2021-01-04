@@ -3,3 +3,4 @@ db.sqlite3
 dump.rdb
 __pycache__/
 ignition/static/ignition/fishy_ocr/
+mysite_3/settings.py
