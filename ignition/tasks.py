@@ -155,8 +155,13 @@ def task_number_two():
     # resp = requests.get("http://8151cb7e441a.ngrok.io/ignition_data")
 =======
     # resp = requests.get('http://8151cb7e441a.ngrok.io/ignition_data')
+<<<<<<< HEAD
+    resp = requests.get('http://5b450b152fb9.ngrok.io/ignition_data')
+    # resp = requests.get('http://5a65fb8b1283.ngrok.io/ignition_data')
+=======
     resp = requests.get('http://5a65fb8b1283.ngrok.io/ignition_data')
 >>>>>>> ac0424c6176f14cd5fd6d005835c6d96e03d9b14
+>>>>>>> ac81e6d96bad0289f75709cbc01f2649cd3f332f
     # resp = requests.get('http://2835dba625aa.ngrok.io/ignition_data') # TODO: Make this configurable
     img = json.loads(resp.text)['img']
     img = base64.b64decode(img)
