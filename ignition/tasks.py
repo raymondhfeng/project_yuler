@@ -1,7 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 from celery import task
 
-from ignition.models import IgnitionRow,IgnitionRowPredictionOLS,IgnitionRowPredictionCVX
+from ignition.models import IgnitionRow,IgnitionRowPredictionOLS,IgnitionRowPredictionCVX,IgnitionRowPredictionTobit
 from django.utils import timezone
 
 import sys
@@ -24,7 +24,7 @@ from time import mktime
 from statsmodels.regression.linear_model import OLSResults
 
 from PIL import Image
-
+import pickle
 
 @task()
 def task_number_one():
@@ -144,25 +144,54 @@ def task_number_one():
             print("CVX PREDICTIONS: {}".format(preds))
             d.save()
 
+        def storeTobitPrediction():
+            data = pd.DataFrame(list(IgnitionRow.objects.all().order_by('-pub_date')[:1].values()))
+            data = pd.DataFrame(data)
+            data['pub_date'] = data.apply(lambda x: str(x['pub_date']),axis=1)
+            data['pub_date_struct'] = data.apply(lambda x: time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z"),axis=1)
+            data.index = data.apply(lambda x: datetime.fromtimestamp(mktime(x['pub_date_struct'])),axis=1)
+            data['hour'] = data.apply(lambda x: str(time.strptime(x['pub_date'],"%Y-%m-%d %H:%M:%S.%f%z")[3]), axis=1)
+            data['day_of_week'] = data.index.map(lambda x: x.weekday())
+            data['hour'] = pd.Categorical(
+                data['hour'], categories=list(range(24)))
+            data['day_of_week'] = pd.Categorical(
+                data['day_of_week'], categories=list(range(7)))
+            hour_dummies = pd.get_dummies(data['hour'], drop_first=True)
+            hour_dummies.columns = ['h'+ str(elem) for elem in hour_dummies.columns]
+            day_of_week_dummies = pd.get_dummies(data['day_of_week'], drop_first=True)
+            day_of_week_dummies.columns = ['dow'+str(elem) for elem in day_of_week_dummies.columns]
+            cols_keep = ['num_players_5','num_players_25','num_players_50','num_players_200','num_players_500']
+            data = data[cols_keep]
+            data = pd.concat((data,hour_dummies,day_of_week_dummies), axis=1)
+
+            all_models =  ['5','25','50','200','500']
+            all_preds = []
+
+            for i in range(len(all_models)):
+                this_data = data.drop(labels=cols_keep[i],axis=1)
+                this_data = np.array(this_data.values)
+                coef,intercept = None,None
+                with open('regression_models/ignition_tobit_models/ignition_tobit_coef_'+all_models[i]+'.pkl','rb') as fp:
+                    coef = pickle.load(fp)
+                with open('regression_models/ignition_tobit_models/ignition_tobit_intercept_'+all_models[i]+'.pkl','rb') as fp:
+                    intercept = pickle.load(fp)
+                prediction = np.dot(this_data,coef)+intercept
+                all_preds.append(prediction)
+
+            preds = all_preds
+
+            d = IgnitionRowPredictionTobit(num_players_5=preds[0][0],num_players_25=preds[1][0],num_players_50=preds[2][0],
+                    num_players_200=preds[3][0],num_players_500=preds[4][0],pub_date=timezone.now())
+            print("TOBIT PREDICTIONS: {}".format(preds))
+            d.save()
+
+        storeTobitPrediction()
         storeOLSPrediction()
         storeCVXPrediction()
 
 @task()
 def task_number_two():
-<<<<<<< HEAD
-    resp = requests.get("http://5b450b152fb9.ngrok.io/ignition_data")
-    # resp = requests.get("http://5a65fb8b1283.ngrok.io/ignition_data")
-    # resp = requests.get("http://8151cb7e441a.ngrok.io/ignition_data")
-=======
-    # resp = requests.get('http://8151cb7e441a.ngrok.io/ignition_data')
-<<<<<<< HEAD
-    resp = requests.get('http://5b450b152fb9.ngrok.io/ignition_data')
-    # resp = requests.get('http://5a65fb8b1283.ngrok.io/ignition_data')
-=======
-    resp = requests.get('http://5a65fb8b1283.ngrok.io/ignition_data')
->>>>>>> ac0424c6176f14cd5fd6d005835c6d96e03d9b14
->>>>>>> ac81e6d96bad0289f75709cbc01f2649cd3f332f
-    # resp = requests.get('http://2835dba625aa.ngrok.io/ignition_data') # TODO: Make this configurable
+    resp = requests.get("http://3cb55a3bab6d.ngrok.io/ignition_data")
     img = json.loads(resp.text)['img']
     img = base64.b64decode(img)
 
@@ -195,3 +224,48 @@ def stitch_photos():
             new_im.paste(im, (i,j))
 
     new_im.save("/home/pi/project_yuler/ignition/static/ignition/fishy_ocr/stitched_fishy_ocrs.png")
+
+@task()
+def check_ignition_timeout():
+    def send_email():
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+        import smtplib
+
+        # create message object instance
+        msg = MIMEMultipart()
+
+
+        message = "ERROR: YOUR ATTENTION IS NEEDED."
+
+        # setup the parameters of the message
+        password = "hooplafoobar123!"
+        msg['From'] = "pokertimeseries@gmail.com"
+        msg['To'] = "pokertimeseries@gmail.com"
+        msg['Subject'] = "Subscription"
+
+        # add in the message body
+        msg.attach(MIMEText(message, 'plain'))
+
+        #create server
+        server = smtplib.SMTP('smtp.gmail.com: 587')
+
+        server.starttls()
+
+        # Login Credentials for sending the mail
+        server.login(msg['From'], password)
+
+
+        # send the message via the server.
+        server.sendmail(msg['From'], msg['To'], msg.as_string())
+
+        server.quit()
+
+        print("successfully sent email to %s:" % (msg['To']))
+
+    data = list(IgnitionRow.objects.all().order_by('-pub_date')[:5].values()) 
+    data_keys = [key for key in data[0] if key != 'id' and key != 'pub_date']
+    if all([len(set([elem[key] for elem in data])) == 1 for key in data_keys]):
+        send_email()
+
+

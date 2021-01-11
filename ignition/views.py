@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from chartjs.views.lines import BaseLineChartView
 
-from ignition.models import IgnitionRow,IgnitionRowPredictionOLS,IgnitionRowPredictionCVX
+from ignition.models import IgnitionRow,IgnitionRowPredictionOLS,IgnitionRowPredictionCVX,IgnitionRowPredictionTobit
 
 import numpy as np
 import pandas as pd 
@@ -88,6 +88,30 @@ class LineChartNumPlrsPredCVX(BaseLineChartView):
     def get_data(self):
         """Return 3 datasets to plot."""
         data = list(IgnitionRowPredictionCVX.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = data[::-1]
+        num_players_data = [[elem['num_players_{}'.format(key)] for elem in two_hours] for key in self.keys]
+        return num_players_data
+
+class LineChartNumPlrsPredTobit(BaseLineChartView):
+
+    def __init__(self):
+        self.num_ticks = NUM_TICKS
+        self.keys = ['5','25','50','200','500']
+
+    def get_labels(self):
+        """Return 7 labels for the x-axis."""
+        data = list(IgnitionRow.objects.all().order_by('-pub_date')[:self.num_ticks].values())
+        two_hours = reversed(data)
+        two_hours = [str(elem['pub_date'])[10:19] for elem in two_hours]
+        return two_hours
+
+    def get_providers(self):
+        """Return names of datasets."""
+        return self.keys
+
+    def get_data(self):
+        """Return 3 datasets to plot."""
+        data = list(IgnitionRowPredictionTobit.objects.all().order_by('-pub_date')[:self.num_ticks].values())
         two_hours = data[::-1]
         num_players_data = [[elem['num_players_{}'.format(key)] for elem in two_hours] for key in self.keys]
         return num_players_data
@@ -176,6 +200,7 @@ line_chart_avg_pot_json = LineChartAvgPot.as_view()
 line_chart_pct_flop_json = LineChartPctFlop.as_view()
 line_chart_num_plrs_pred_json = LineChartNumPlrsPred.as_view()
 line_chart_num_plrs_pred_cvx_json = LineChartNumPlrsPredCVX.as_view()
+line_chart_num_plrs_pred_tobit_json = LineChartNumPlrsPredTobit.as_view()
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
